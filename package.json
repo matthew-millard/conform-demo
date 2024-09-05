@@ -1,0 +1,43 @@
+{
+  "name": "conform-demo",
+  "version": "1.0.0",
+  "description": "Conform Demo with Remix - A demonstration project showcasing form validation and error handling using the Conform library in a Remix application.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node ./server.js",
+    "start": "cross-env NODE_ENV=production node ./server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matthew-millard/conform-demo.git"
+  },
+  "keywords": [
+    "Conform",
+    "Remix",
+    "Zod",
+    "React",
+    "Tailwind"
+  ],
+  "author": "Matt Millard",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matthew-millard/conform-demo/issues"
+  },
+  "homepage": "https://github.com/matthew-millard/conform-demo#readme",
+  "dependencies": {
+    "@remix-run/express": "^2.11.2",
+    "@remix-run/node": "^2.11.2",
+    "@remix-run/react": "^2.11.2",
+    "cross-env": "^7.0.3",
+    "express": "^4.19.2",
+    "isbot": "^4.4.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@remix-run/dev": "^2.11.2",
+    "vite": "^5.4.3"
+  }
+}
