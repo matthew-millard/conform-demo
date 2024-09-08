@@ -18,11 +18,11 @@
   }
 
   .input-text {
-    @apply block w-full rounded-md bg-transparent border-0 py-1.5 pl-3 text-zinc-50 shadow-sm ring-1 ring-inset ring-zinc-200 focus:outline-none placeholder:text-zinc-600 focus:ring-2 focus:ring-inset focus:ring-violet-500 sm:text-sm sm:leading-6;
+    @apply block w-full rounded-md bg-transparent border-0 py-1.5 pl-3 text-zinc-50 shadow-sm ring-1 ring-inset ring-zinc-200 focus:outline-none placeholder:text-zinc-600 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6;
   }
 
   .input-checkbox {
-    @apply h-4 w-4 rounded appearance-none border-zinc-50 border-2 checked:border-none checked:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:ring-violet-500 focus-visible:outline-violet-600;
+    @apply h-4 w-4 rounded appearance-none border-zinc-50 border-2 checked:border-none checked:bg-violet-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:ring-violet-600 focus-visible:outline-violet-600;
   }
 
   .label-input-text {
@@ -38,6 +38,6 @@
   }
 
   .hyperlink {
-    @apply font-semibold text-zinc-400 hover:text-zinc-200 text-sm leading-6;
+    @apply font-semibold text-zinc-400 hover:text-zinc-200 text-sm leading-6  focus-visible:outline focus-visible:outline-2 focus:ring-violet-600 focus-visible:outline-violet-600 rounded-sm;
   }
 }
