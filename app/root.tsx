@@ -2,7 +2,7 @@ import { Links, Meta, Outlet, Scripts, ScrollRestoration } from '@remix-run/reac
 import styles from '~/tailwind.css?url';
 
 export const links = () => {
-  return [{ rel: 'stylesheet', href: styles }];
+  return [{ rel: 'stylesheet', href: styles, as: 'style' }];
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -15,7 +15,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="bg-zinc-900">
         {children}
         <ScrollRestoration />
         <Scripts />
