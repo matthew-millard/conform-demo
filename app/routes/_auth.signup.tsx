@@ -1,8 +1,10 @@
 import { parseWithZod } from '@conform-to/zod';
-import { ActionFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { z } from 'zod';
 import { Hyperlink, Logo } from '~/components';
 import { SignupSchema } from '~/schemas';
 import { SignupForm } from '~/ui';
+import { prisma } from '~/utils/db.server';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -11,19 +13,45 @@ export async function action({ request }: ActionFunctionArgs) {
     async: true,
     schema: SignupSchema.transform(async (data, ctx) => {
       // Todo - validate the user does not already exist
+      const userExists = await prisma.user.findFirst({
+        where: {
+          OR: [{ email: data.email }, { username: data.username }],
+        },
+      });
+
+      if (userExists) {
+        if (userExists.email === data.email) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Email already exists',
+            path: ['email'],
+          });
+        }
+
+        if (userExists.username === data.username) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Username already exists',
+            path: ['username'],
+          });
+        }
+      }
+
       return data;
     }),
   });
-
-  console.log('submission', submission);
 
   if (submission.status !== 'success') {
     return submission.reply();
   }
 
-  // Todo - save the user to the database
+  const { firstName, lastName, username, email, password } = submission.value;
 
-  return {};
+  await prisma.user.create({
+    data: { firstName, lastName, username, email, password },
+  });
+
+  return redirect('/login', 302);
 }
 
 export default function SignupRoute() {
