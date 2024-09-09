@@ -4,7 +4,7 @@
 
 @layer base {
   h2 {
-    @apply text-2xl font-bold text-zinc-50;
+    @apply text-xl lg:text-2xl font-bold text-zinc-50;
   }
 
   p {
@@ -39,5 +39,9 @@
 
   .hyperlink {
     @apply font-semibold text-zinc-400 hover:text-zinc-200 text-sm leading-6  focus-visible:outline focus-visible:outline-2 focus:ring-violet-600 focus-visible:outline-violet-600 rounded-sm;
+  }
+
+  .error-message {
+    @apply text-red-600 text-xs;
   }
 }
