@@ -3,5 +3,5 @@ type InputTextProps = {
 };
 
 export default function InputText({ fieldAttributes }: InputTextProps) {
-  return <input {...fieldAttributes} className="input-text" />;
+  return <input {...fieldAttributes} key={null} className="input-text" />;
 }
