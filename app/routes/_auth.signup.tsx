@@ -1,5 +1,30 @@
+import { parseWithZod } from '@conform-to/zod';
+import { ActionFunctionArgs } from '@remix-run/node';
 import { Hyperlink, Logo } from '~/components';
+import { SignupSchema } from '~/schemas';
 import { SignupForm } from '~/ui';
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+
+  const submission = await parseWithZod(formData, {
+    async: true,
+    schema: SignupSchema.transform(async (data, ctx) => {
+      // Todo - validate the user does not already exist
+      return data;
+    }),
+  });
+
+  console.log('submission', submission);
+
+  if (submission.status !== 'success') {
+    return submission.reply();
+  }
+
+  // Todo - save the user to the database
+
+  return {};
+}
 
 export default function SignupRoute() {
   return (

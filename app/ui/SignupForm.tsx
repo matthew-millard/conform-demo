@@ -1,86 +1,111 @@
-import { Checkbox, InputText, Label, SubmitButton } from '~/components';
-
-const signUpFormId = 'sign-up-form';
+import { action } from '~/routes/_auth.signup';
+import { Form, useActionData } from '@remix-run/react';
+import { InputText, Label, SubmitButton } from '~/components';
+import { getFormProps, getInputProps, useForm } from '@conform-to/react';
+import { getZodConstraint, parseWithZod } from '@conform-to/zod';
+import { SignupSchema } from '~/schemas';
 
 export default function SignupForm() {
+  const lastResult = useActionData<typeof action>();
+
+  const [form, fields] = useForm({
+    id: 'sign-up-form',
+    lastResult,
+    constraint: getZodConstraint(SignupSchema),
+    shouldValidate: 'onBlur',
+    shouldRevalidate: 'onInput',
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: SignupSchema });
+    },
+  });
+
   return (
-    <form method="POST" id={signUpFormId} className="space-y-6">
+    <Form method="POST" {...getFormProps(form)} className="space-y-6">
       <div className="input-group">
-        <Label htmlFor="first-name" text="First name" classNames="label-input-text" />
+        <Label htmlFor={fields.firstName.id} text="First name" classNames="label-input-text" />
         <InputText
           fieldAttributes={{
-            id: 'first-name',
-            type: 'text',
-            name: 'firstName',
-            autoComplete: 'off',
-            required: true,
+            ...getInputProps(fields.firstName, { type: 'text' }),
             autoFocus: true,
-          }}
-        />
-      </div>
-
-      <div className="input-group">
-        <Label htmlFor="last-name" text="Last name" classNames="label-input-text" />
-        <InputText
-          fieldAttributes={{ id: 'last-name', type: 'text', name: 'lastName', autoComplete: 'off', required: true }}
-        />
-      </div>
-
-      <div className="input-group">
-        <Label htmlFor="username" text="Username" classNames="label-input-text" />
-        <InputText
-          fieldAttributes={{ id: 'username', type: 'text', name: 'username', autoComplete: 'off', required: true }}
-        />
-      </div>
-
-      <div className="input-group">
-        <Label htmlFor="email" text="Email address" classNames="label-input-text" />
-        <InputText
-          fieldAttributes={{
-            id: 'email',
-            type: 'email',
-            name: 'email',
             autoComplete: 'off',
             required: true,
           }}
         />
+        <p id={fields.firstName.errorId} className="text-red-600 text-xs">
+          {fields.firstName.errors}
+        </p>
+      </div>
+
+      <div className="input-group">
+        <Label htmlFor={fields.lastName.id} text="Last name" classNames="label-input-text" />
+        <InputText
+          fieldAttributes={{
+            ...getInputProps(fields.lastName, { type: 'text' }),
+            autoComplete: 'off',
+            required: true,
+          }}
+        />
+        <p id={fields.lastName.errorId} className="text-red-600">
+          {fields.lastName.errors}
+        </p>
+      </div>
+
+      <div className="input-group">
+        <Label htmlFor={fields.username.id} text="Username" classNames="label-input-text" />
+        <InputText
+          fieldAttributes={{
+            ...getInputProps(fields.username, { type: 'text' }),
+            autoComplete: 'off',
+            required: true,
+          }}
+        />
+        <p id={fields.username.errorId} className="text-red-600">
+          {fields.username.errors}
+        </p>
+      </div>
+
+      <div className="input-group">
+        <Label htmlFor={fields.email.id} text="Email address" classNames="label-input-text" />
+        <InputText
+          fieldAttributes={{
+            ...getInputProps(fields.email, { type: 'email' }),
+            autoComplete: 'off',
+            required: true,
+          }}
+        />
+        <p id={fields.email.errorId} className="text-red-600">
+          {fields.email.errors}
+        </p>
       </div>
       <div className="input-group">
         <Label htmlFor="password" text="Password" classNames="label-input-text" />
         <InputText
           fieldAttributes={{
-            id: 'password',
-            type: 'password',
-            name: 'password',
+            ...getInputProps(fields.password, { type: 'password' }),
             autoComplete: 'off',
             required: true,
           }}
         />
+        <p id={fields.password.errorId} className="text-red-600">
+          {fields.password.errors}
+        </p>
       </div>
 
       <div className="input-group">
         <Label htmlFor="confirm-password" text="Confirm password" classNames="label-input-text" />
         <InputText
           fieldAttributes={{
-            id: 'confirm-password',
-            type: 'password',
-            name: 'confirmPassword',
+            ...getInputProps(fields.confirmPassword, { type: 'password' }),
             autoComplete: 'off',
             required: true,
           }}
         />
+        <p id={fields.confirmPassword.errorId} className="text-red-600">
+          {fields.confirmPassword.errors}
+        </p>
       </div>
 
-      {/* <div className="">
-        <Checkbox fieldAttributes={{ id: 'email-subscription', name: 'emailSubscription' }} />
-        <Label
-          classNames="label-input-checkbox"
-          htmlFor="email-subscription"
-          text="(Optional) It's to send me emails with Conform updates, tips and tutorials. You can opt out at any time."
-        />
-      </div> */}
-
-      <SubmitButton fieldAttributes={{ form: signUpFormId }} text="Sign up" />
-    </form>
+      <SubmitButton fieldAttributes={{ form: form.id }} text="Sign up" />
+    </Form>
   );
 }
