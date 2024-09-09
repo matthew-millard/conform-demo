@@ -1,6 +1,6 @@
 import { action } from '~/routes/_auth.signup';
 import { Form, useActionData } from '@remix-run/react';
-import { InputText, Label, SubmitButton } from '~/components';
+import { FormFieldErrors, InputText, Label, SubmitButton } from '~/components';
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { SignupSchema } from '~/schemas';
@@ -20,7 +20,7 @@ export default function SignupForm() {
   });
 
   return (
-    <Form method="POST" {...getFormProps(form)} className="space-y-6">
+    <Form method="POST" {...getFormProps(form)} className="space-y-3">
       <div className="input-group">
         <Label htmlFor={fields.firstName.id} text="First name" classNames="label-input-text" />
         <InputText
@@ -31,9 +31,7 @@ export default function SignupForm() {
             required: true,
           }}
         />
-        <p id={fields.firstName.errorId} className="text-red-600 text-xs">
-          {fields.firstName.errors}
-        </p>
+        <FormFieldErrors field={fields.firstName} />
       </div>
 
       <div className="input-group">
@@ -45,9 +43,7 @@ export default function SignupForm() {
             required: true,
           }}
         />
-        <p id={fields.lastName.errorId} className="text-red-600">
-          {fields.lastName.errors}
-        </p>
+        <FormFieldErrors field={fields.lastName} />
       </div>
 
       <div className="input-group">
@@ -59,9 +55,7 @@ export default function SignupForm() {
             required: true,
           }}
         />
-        <p id={fields.username.errorId} className="text-red-600">
-          {fields.username.errors}
-        </p>
+        <FormFieldErrors field={fields.username} />
       </div>
 
       <div className="input-group">
@@ -73,10 +67,9 @@ export default function SignupForm() {
             required: true,
           }}
         />
-        <p id={fields.email.errorId} className="text-red-600">
-          {fields.email.errors}
-        </p>
+        <FormFieldErrors field={fields.email} />
       </div>
+
       <div className="input-group">
         <Label htmlFor="password" text="Password" classNames="label-input-text" />
         <InputText
@@ -86,9 +79,7 @@ export default function SignupForm() {
             required: true,
           }}
         />
-        <p id={fields.password.errorId} className="text-red-600">
-          {fields.password.errors}
-        </p>
+        <FormFieldErrors field={fields.password} />
       </div>
 
       <div className="input-group">
@@ -100,9 +91,7 @@ export default function SignupForm() {
             required: true,
           }}
         />
-        <p id={fields.confirmPassword.errorId} className="text-red-600">
-          {fields.confirmPassword.errors}
-        </p>
+        <FormFieldErrors field={fields.confirmPassword} />
       </div>
 
       <SubmitButton fieldAttributes={{ form: form.id }} text="Sign up" />
