@@ -1,8 +1,8 @@
-import { ActionFunctionArgs, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
+import { signup } from '~/.server/auth';
 import { parseWithZodAndCheckUniqueness } from '~/.server/validation';
 import { Hyperlink, Logo } from '~/components';
 import { SignupForm } from '~/ui';
-import { prisma } from '~/utils/db.server';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
@@ -14,9 +14,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
   const { firstName, lastName, username, email, password } = submission.value;
 
-  await prisma.user.create({
-    data: { firstName, lastName, username, email, password },
-  });
+  const user = await signup({ firstName, lastName, username, email, password });
+
+  if (!user) {
+    return json(
+      { message: 'An unexpected error occurred while creating your account. Please try again.' },
+      { status: 500 }
+    );
+  }
 
   return redirect('/login', 302);
 }

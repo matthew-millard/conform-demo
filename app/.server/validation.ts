@@ -3,6 +3,8 @@ import { z } from 'zod';
 import { SignupSchema } from '~/schemas';
 import { prisma } from '~/utils/db.server';
 
+export type SignupSubmissionValues = Omit<z.infer<typeof SignupSchema>, 'confirmPassword'>;
+
 export async function parseWithZodAndCheckUniqueness(formData: FormData) {
   return await parseWithZod(formData, {
     async: true,
