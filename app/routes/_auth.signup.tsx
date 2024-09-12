@@ -9,7 +9,9 @@ export async function action({ request }: ActionFunctionArgs) {
   const submission = await parseWithZodAndCheckUniqueness(formData); // Includes username and email uniqueness check
 
   if (submission.status !== 'success') {
-    return submission.reply();
+    return json(submission.reply(), {
+      status: submission.status === 'error' ? 400 : 200,
+    });
   }
 
   const { firstName, lastName, username, email, password } = submission.value;
@@ -17,10 +19,9 @@ export async function action({ request }: ActionFunctionArgs) {
   const user = await signup({ firstName, lastName, username, email, password });
 
   if (!user) {
-    return json(
-      { message: 'An unexpected error occurred while creating your account. Please try again.' },
-      { status: 500 }
-    );
+    return json(submission.reply({ formErrors: ['An unexpected error occured. Please try again.'] }), {
+      status: 500,
+    });
   }
 
   return redirect('/login', 302);

@@ -1,6 +1,6 @@
 import { action } from '~/routes/_auth.signup';
 import { Form, useActionData } from '@remix-run/react';
-import { FormFieldErrors, InputText, Label, SubmitButton } from '~/components';
+import { FormErrors, FormFieldErrors, InputText, Label, SubmitButton } from '~/components';
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { SignupSchema } from '~/schemas';
@@ -12,7 +12,7 @@ export default function SignupForm() {
     id: 'sign-up-form',
     lastResult,
     constraint: getZodConstraint(SignupSchema),
-    shouldValidate: 'onBlur',
+    shouldValidate: 'onSubmit',
     shouldRevalidate: 'onInput',
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: SignupSchema });
@@ -95,6 +95,7 @@ export default function SignupForm() {
       </div>
 
       <SubmitButton fieldAttributes={{ form: form.id }} text="Sign up" />
+      <FormErrors form={form} />
     </Form>
   );
 }
