@@ -1,5 +1,38 @@
+import { parseWithZod } from '@conform-to/zod';
+import { ActionFunctionArgs } from '@remix-run/node';
+import { z } from 'zod';
+import { login } from '~/.server/auth';
 import { Hyperlink, Logo } from '~/components';
+import { LoginSchema } from '~/schemas/auth';
 import { LoginForm } from '~/ui';
+
+export async function action({ request }: ActionFunctionArgs) {
+  const formData = await request.formData();
+  const submission = await parseWithZod(formData, {
+    async: true,
+    schema: LoginSchema.transform(async (data, ctx) => {
+      const session = await login(data);
+
+      if (!session) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Invalid username or password',
+        });
+        return z.NEVER;
+      }
+
+      return { ...data, session };
+    }),
+  });
+
+  if (submission.status !== 'success') {
+    return submission.reply({
+      formErrors: ['Invalid email or password.'],
+      hideFields: ['password'],
+    });
+  }
+  return {};
+}
 
 export default function LoginRoute() {
   return (

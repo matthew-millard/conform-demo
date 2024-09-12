@@ -1,29 +1,40 @@
-import { Hyperlink, InputText, Label, RememberMe, SubmitButton } from '~/components';
-
-const loginFormId = 'login-form';
+import { getFormProps, getInputProps, useForm } from '@conform-to/react';
+import { getZodConstraint, parseWithZod } from '@conform-to/zod';
+import { Form, useActionData } from '@remix-run/react';
+import { FormErrors, FormFieldErrors, Hyperlink, InputText, Label, RememberMe, SubmitButton } from '~/components';
+import { action } from '~/routes/_auth.login';
+import { LoginSchema } from '~/schemas/auth';
 
 export default function LoginForm() {
+  const lastResult = useActionData<typeof action>();
+  const [form, fields] = useForm({
+    id: 'login-form',
+    lastResult,
+    constraint: getZodConstraint(LoginSchema),
+    shouldValidate: 'onSubmit',
+    shouldRevalidate: 'onInput',
+    onValidate({ formData }) {
+      return parseWithZod(formData, { schema: LoginSchema });
+    },
+  });
   return (
-    <form action="/login" method="POST" id={loginFormId} className="space-y-6">
+    <Form method="POST" {...getFormProps(form)} className="space-y-6">
       <div className="input-group">
-        <Label htmlFor="email" text="Email address" classNames="label-input-text" />
+        <Label htmlFor={fields.email.id} text="Email address" classNames="label-input-text" />
         <InputText
           fieldAttributes={{
-            id: 'email',
-            type: 'email',
-            name: 'email',
+            ...getInputProps(fields.email, { type: 'email' }),
             autoFocus: true,
             autoComplete: 'off',
-            required: true,
           }}
         />
+        <FormFieldErrors field={fields.email} />
       </div>
 
       <div className="input-group">
-        <Label htmlFor="password" text="Password" classNames="label-input-text" />
-        <InputText
-          fieldAttributes={{ id: 'password', type: 'password', name: 'password', autoComplete: 'off', required: true }}
-        />
+        <Label htmlFor={fields.password.id} text="Password" classNames="label-input-text" />
+        <InputText fieldAttributes={{ ...getInputProps(fields.password, { type: 'password' }), autoComplete: 'off' }} />
+        <FormFieldErrors field={fields.password} />
       </div>
 
       <div className="flex items-center justify-between">
@@ -31,7 +42,8 @@ export default function LoginForm() {
         <Hyperlink children={'Forgot password?'} fieldAttributes={{ href: '/password/reset' }} />
       </div>
 
-      <SubmitButton fieldAttributes={{ form: loginFormId }} text="Log in" />
-    </form>
+      <SubmitButton fieldAttributes={{ form: form.id }} text="Log in" />
+      <FormErrors form={form} />
+    </Form>
   );
 }

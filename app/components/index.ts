@@ -6,5 +6,6 @@ import Hyperlink from './Hyperlink';
 import SubmitButton from './SubmitButton';
 import InputText from './InputText';
 import FormFieldErrors from './FormFieldErrors';
+import FormErrors from './FormErrors';
 
-export { Logo, RememberMe, Label, Checkbox, Hyperlink, SubmitButton, InputText, FormFieldErrors };
+export { Logo, RememberMe, Label, Checkbox, Hyperlink, SubmitButton, InputText, FormFieldErrors, FormErrors };
