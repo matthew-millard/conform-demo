@@ -1,7 +1,8 @@
 import { parseWithZod } from '@conform-to/zod';
-import { ActionFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { z } from 'zod';
-import { login } from '~/.server/auth';
+import { login, sessionKey } from '~/.server/auth';
+import { getCookie, sessionStorage } from '~/.server/session';
 import { Hyperlink, Logo } from '~/components';
 import { LoginSchema } from '~/schemas/auth';
 import { LoginForm } from '~/ui';
@@ -26,12 +27,27 @@ export async function action({ request }: ActionFunctionArgs) {
   });
 
   if (submission.status !== 'success') {
-    return submission.reply({
-      formErrors: ['Invalid email or password.'],
-      hideFields: ['password'],
-    });
+    return json(
+      submission.reply({
+        formErrors: ['Invalid email or password.'],
+        hideFields: ['password'],
+      }),
+      { status: submission.status === 'error' ? 400 : 200 }
+    );
   }
-  return {};
+
+  const { session, rememberMe } = submission.value;
+
+  const cookieSession = await getCookie(request);
+  cookieSession.set(sessionKey, session.id);
+
+  return redirect('/', {
+    headers: {
+      'set-cookie': await sessionStorage.commitSession(cookieSession, {
+        expires: rememberMe ? session.expirationDate : undefined,
+      }),
+    },
+  });
 }
 
 export default function LoginRoute() {

@@ -5,6 +5,9 @@ import type { SignupSubmissionValues } from './validation';
 // Cookie Expiration Time
 const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30; // 30 days
 
+export const sessionKey = 'sessionId';
+export const cookiePrefix = 'CONFORM_DEMO_APP';
+
 export function getSessionExpirationDate() {
   const expirationDate = new Date(Date.now() + SESSION_EXPIRATION_TIME);
   return expirationDate;
