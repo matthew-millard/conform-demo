@@ -4,6 +4,7 @@ import { FormErrors, FormFieldErrors, InputText, Label, SubmitButton } from '~/c
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { SignupSchema } from '~/schemas';
+import { HoneypotInputs } from 'remix-utils/honeypot/react';
 
 export default function SignupForm() {
   const lastResult = useActionData<typeof action>();
@@ -21,6 +22,7 @@ export default function SignupForm() {
 
   return (
     <Form method="POST" {...getFormProps(form)} className="space-y-3">
+      <HoneypotInputs />
       <div className="input-group">
         <Label htmlFor={fields.firstName.id} text="First name" classNames="label-input-text" />
         <InputText
