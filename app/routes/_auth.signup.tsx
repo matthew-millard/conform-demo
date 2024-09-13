@@ -1,11 +1,13 @@
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { signup } from '~/.server/auth';
+import { checkHoneypot } from '~/.server/honeypot';
 import { parseWithZodAndCheckUniqueness } from '~/.server/validation';
 import { Hyperlink, Logo } from '~/components';
 import { SignupForm } from '~/ui';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
+  checkHoneypot(formData);
   const submission = await parseWithZodAndCheckUniqueness(formData); // Includes username and email uniqueness check
 
   if (submission.status !== 'success') {

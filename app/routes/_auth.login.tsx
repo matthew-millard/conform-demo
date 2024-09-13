@@ -2,6 +2,7 @@ import { parseWithZod } from '@conform-to/zod';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { z } from 'zod';
 import { login, sessionKey } from '~/.server/auth';
+import { checkHoneypot } from '~/.server/honeypot';
 import { getCookie, sessionStorage } from '~/.server/session';
 import { Hyperlink, Logo } from '~/components';
 import { LoginSchema } from '~/schemas/auth';
@@ -9,6 +10,7 @@ import { LoginForm } from '~/ui';
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
+  checkHoneypot(formData);
   const submission = await parseWithZod(formData, {
     async: true,
     schema: LoginSchema.transform(async (data, ctx) => {
