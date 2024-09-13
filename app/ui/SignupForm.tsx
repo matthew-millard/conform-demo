@@ -5,6 +5,7 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { SignupSchema } from '~/schemas';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
+import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
 
 export default function SignupForm() {
   const lastResult = useActionData<typeof action>();
@@ -22,6 +23,7 @@ export default function SignupForm() {
 
   return (
     <Form method="POST" {...getFormProps(form)} className="space-y-3">
+      <AuthenticityTokenInput />
       <HoneypotInputs />
       <div className="input-group">
         <Label htmlFor={fields.firstName.id} text="First name" classNames="label-input-text" />

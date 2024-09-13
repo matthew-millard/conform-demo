@@ -1,6 +1,7 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { Form, useActionData } from '@remix-run/react';
+import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { FormErrors, FormFieldErrors, Hyperlink, InputText, Label, RememberMe, SubmitButton } from '~/components';
 import { action } from '~/routes/_auth.login';
@@ -20,6 +21,7 @@ export default function LoginForm() {
   });
   return (
     <Form method="POST" {...getFormProps(form)} className="space-y-6">
+      <AuthenticityTokenInput />
       <HoneypotInputs />
       <div className="input-group">
         <Label htmlFor={fields.email.id} text="Email address" classNames="label-input-text" />
