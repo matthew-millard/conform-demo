@@ -1,6 +1,8 @@
 import { Honeypot, SpamError } from 'remix-utils/honeypot/server';
 
-const honeypot = new Honeypot();
+const honeypot = new Honeypot({
+  validFromFieldName: process.env.TESTING ? null : undefined,
+});
 
 export default honeypot;
 
