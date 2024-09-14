@@ -1,6 +1,6 @@
 import { createRequestHandler } from '@remix-run/express';
 import express from 'express';
-import { generalRateLimit, strongestRateLimit, strongRateLimit } from './.server.utils/rate-limiters.js';
+import { generalRateLimit, strongestRateLimit, strongRateLimit } from './middleware/rate-limiters.server.js';
 
 const viteDevServer =
   process.env.NODE_ENV === 'production'
