@@ -8,12 +8,12 @@ type SubmitButtonProps = {
 export default function SubmitButton({ fieldAttributes, text, isPending, pendingText }: SubmitButtonProps) {
   return (
     <button type="submit" {...fieldAttributes} className="submit-button">
-      {isPending ? <Spinner pendingText={pendingText} /> : text}
+      {isPending ? <PendingIndicator pendingText={pendingText} /> : text}
     </button>
   );
 }
 
-function Spinner({ pendingText }: { pendingText: string }) {
+function PendingIndicator({ pendingText }: { pendingText: string }) {
   return (
     <span className="flex items-center">
       <svg
