@@ -4,11 +4,16 @@ import { Form, useActionData } from '@remix-run/react';
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { FormErrors, FormFieldErrors, Hyperlink, InputText, Label, RememberMe, SubmitButton } from '~/components';
+import { useIsPending } from '~/hooks/useIsPending';
 import { action } from '~/routes/_auth.login';
 import { LoginSchema } from '~/schemas/auth';
 
+const loginFormActionIntent = 'login';
+
 export default function LoginForm() {
   const lastResult = useActionData<typeof action>();
+  const isPending = useIsPending({ formIntent: loginFormActionIntent });
+
   const [form, fields] = useForm({
     id: 'login-form',
     lastResult,
@@ -46,7 +51,12 @@ export default function LoginForm() {
         <Hyperlink children={'Forgot password?'} fieldAttributes={{ href: '/password/reset' }} />
       </div>
 
-      <SubmitButton fieldAttributes={{ form: form.id }} text="Log in" />
+      <SubmitButton
+        fieldAttributes={{ form: form.id, name: 'intent', value: loginFormActionIntent }}
+        text="Log in"
+        isPending={isPending}
+        pendingText="Logging in..."
+      />
       <FormErrors form={form} />
     </Form>
   );

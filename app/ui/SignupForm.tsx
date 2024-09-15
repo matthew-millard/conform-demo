@@ -6,9 +6,13 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { SignupSchema } from '~/schemas';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
+import { useIsPending } from '~/hooks/useIsPending';
+
+const signupFormActionIntent = 'sign up';
 
 export default function SignupForm() {
   const lastResult = useActionData<typeof action>();
+  const isPending = useIsPending({ formIntent: signupFormActionIntent });
 
   const [form, fields] = useForm({
     id: 'sign-up-form',
@@ -98,7 +102,12 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.confirmPassword} />
       </div>
 
-      <SubmitButton fieldAttributes={{ form: form.id }} text="Sign up" />
+      <SubmitButton
+        fieldAttributes={{ form: form.id, name: 'intent', value: signupFormActionIntent }}
+        text="Sign up"
+        isPending={isPending}
+        pendingText="Signing up..."
+      />
       <FormErrors form={form} />
     </Form>
   );

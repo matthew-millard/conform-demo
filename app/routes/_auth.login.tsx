@@ -13,6 +13,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   await checkCSRF(formData, request.headers);
   checkHoneypot(formData);
+
   const submission = await parseWithZod(formData, {
     async: true,
     schema: LoginSchema.transform(async (data, ctx) => {
