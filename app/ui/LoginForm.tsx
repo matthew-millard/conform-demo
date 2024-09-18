@@ -4,9 +4,9 @@ import { Form, useActionData } from '@remix-run/react';
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { FormErrors, FormFieldErrors, Hyperlink, InputText, Label, RememberMe, SubmitButton } from '~/components';
-import { useIsPending } from '~/hooks/useIsPending';
+import { useIsPending } from '~/hooks';
 import { action } from '~/routes/_auth.login';
-import { LoginSchema } from '~/schemas/auth';
+import { LoginSchema } from '~/schemas';
 
 const loginFormActionIntent = 'login';
 
@@ -48,7 +48,7 @@ export default function LoginForm() {
 
       <div className="flex items-center justify-between">
         <RememberMe />
-        <Hyperlink children={'Forgot password?'} fieldAttributes={{ href: '/password/reset' }} />
+        <Hyperlink children={'Forgot password?'} fieldAttributes={{ href: '/forgot-password' }} />
       </div>
 
       <SubmitButton

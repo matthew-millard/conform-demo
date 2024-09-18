@@ -6,7 +6,7 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { SignupSchema } from '~/schemas';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
-import { useIsPending } from '~/hooks/useIsPending';
+import { useIsPending } from '~/hooks';
 
 const signupFormActionIntent = 'sign up';
 
