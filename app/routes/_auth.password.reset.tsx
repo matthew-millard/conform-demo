@@ -1,7 +1,7 @@
-export default function PasswordResetRoute() {
+export default function ResetPasswordRoute() {
   return (
     <div>
-      <h1>Reset Password</h1>
+      <h1 className="text-white">Reset Password</h1>
     </div>
   );
 }
