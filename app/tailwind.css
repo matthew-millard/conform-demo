@@ -3,37 +3,59 @@
 @tailwind utilities;
 
 @layer base {
+  /* text */
+  h2 {
+    @apply text-xl lg:text-2xl font-bold;
+  }
+
   :root {
-    --color-primary: #6200ee;
-    --color-primary-variant-light: #bb86fc;
-    --color-primary-variant-dark: #3700b3;
-
-    --color-secondary: #03dac5;
-
-    --color-background: #ffffff;
-    --color-surface: #ffffff;
-    --color-error: #b00020;
-    --color-on-primary: #ffffff;
-    --color-on-secondary: #000000;
-    --color-on-background: #000000;
-    --color-on-surface: #000000;
-    --color-on-error: #ffffff;
+    --zinc-50: #fafafa;
+    --zinc-100: #f4f4f5;
+    --zinc-200: #e4e4e7;
+    --zinc-300: #d4d4d8;
+    --zinc-400: #a1a1aa;
+    --zinc-500: #71717a;
+    --zinc-600: #52525b;
+    --zinc-700: #3f3f46;
+    --zinc-800: #27272a;
+    --zinc-900: #18181b;
+    --zinc-950: #0e0e11;
+    --text-color: var(--zinc-800);
+    --text-color-muted: var(--zinc-600);
+    --text-color-muted-extra: var(--zinc-500);
+    --border-color: var(--zinc-300);
+    --border-color-subtle: var(--zinc-200);
+    --app-background-color: var(--zinc-50);
+    --card-background-color: #fff;
+    --card-border-color: var(--zinc-300);
+    --primary-button-color: var(--zinc-800);
+    --primary-button-text-color: #fff;
+    --secondary-button-color: var(--zinc-100);
+    --logo-background-color: var(--zinc-800);
+    --logo-text-color: var(--zinc-950);
+    --input-text-color: var(--zinc-800);
+    --input-background-color: #fff;
+    --input-border-color: var(--zinc-300);
   }
 
   .dark {
-    --color-background: #000000;
-    --color-surface: #000000;
-    --color-on-primary: #000000;
-    --color-on-secondary: #ffffff;
-    --color-on-background: #ffffff;
-    --color-on-surface: #ffffff;
+    --text-color: var(--zinc-100);
+    --text-color-muted: var(--zinc-300);
+    --text-color-muted-extra: var(--zinc-400);
+    --border-color: var(--zinc-700);
+    --subtle-border-color: var(--zinc-800);
+    --background-muted: var(--zinc-900);
+    --background-muted-extra: var(--zinc-800);
+    --app-background-color: var(--zinc-950);
+    --card-background-color: var(--zinc-900);
+    --card-border-color: var(--zinc-800);
+    --primary-button-color: var(--zinc-100);
+    --primary-button-text-color: var(--zinc-950);
+    --secondary-button-color: var(--zinc-800);
+    --logo-background-color: var(--zinc-300);
+    --logo-text-color: #fff;
+    --input-text-color: var(--zinc-50);
+    --input-background-color: var(--zinc-900);
+    --input-border-color: var(--zinc-600);
   }
 }
-
-/* h2 {
-    @apply text-xl lg:text-2xl font-bold text-zinc-50;
-  }
-
-  p {
-    @apply text-sm text-zinc-50;
-  }*/

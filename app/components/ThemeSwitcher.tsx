@@ -30,12 +30,12 @@ export default function ThemeSwitcher({ userPreference }: { userPreference: Them
       <input type="hidden" name="theme" value={nextMode} />
       <button type="submit" name="intent" value={updateThemeActionIntent} className="text-white">
         {mode === 'light' ? (
-          <span>
+          <span className="text-text-color-muted">
             <SunIcon />
             <span className="sr-only">Light</span>
           </span>
         ) : (
-          <span>
+          <span className="text-text-color-muted">
             <MoonIcon />
             <span className="sr-only">Dark</span>
           </span>

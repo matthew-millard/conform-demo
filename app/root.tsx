@@ -64,7 +64,7 @@ function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-background">
+      <body className="bg-app-background-color text-text-color">
         <Outlet context={{ theme }} />
         <ScrollRestoration />
         <Scripts />
