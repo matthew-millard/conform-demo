@@ -7,7 +7,7 @@ export default function IndexRoute() {
 
   return (
     <div>
-      <h1 className="text-white">Index Route</h1>
+      <h1>Index Route</h1>
       <ThemeSwitcher userPreference={theme} />
     </div>
   );

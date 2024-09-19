@@ -33,7 +33,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function SignupRoute() {
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-lg sm:bg-zinc-800/20 sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-lg sm:bg-card-background-color border border-card-border-color sm:mx-auto sm:w-full sm:max-w-[480px]">
       <Logo />
       <h2 className="mt-8 text-center">Sign up for an account</h2>
 
