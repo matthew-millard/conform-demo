@@ -3,11 +3,37 @@
 @tailwind utilities;
 
 @layer base {
-  h2 {
+  :root {
+    --color-primary: #6200ee;
+    --color-primary-variant-light: #bb86fc;
+    --color-primary-variant-dark: #3700b3;
+
+    --color-secondary: #03dac5;
+
+    --color-background: #ffffff;
+    --color-surface: #ffffff;
+    --color-error: #b00020;
+    --color-on-primary: #ffffff;
+    --color-on-secondary: #000000;
+    --color-on-background: #000000;
+    --color-on-surface: #000000;
+    --color-on-error: #ffffff;
+  }
+
+  .dark {
+    --color-background: #000000;
+    --color-surface: #000000;
+    --color-on-primary: #000000;
+    --color-on-secondary: #ffffff;
+    --color-on-background: #ffffff;
+    --color-on-surface: #ffffff;
+  }
+}
+
+/* h2 {
     @apply text-xl lg:text-2xl font-bold text-zinc-50;
   }
 
   p {
     @apply text-sm text-zinc-50;
-  }
-}
+  }*/
