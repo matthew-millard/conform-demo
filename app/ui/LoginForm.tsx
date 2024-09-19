@@ -28,8 +28,12 @@ export default function LoginForm() {
     <Form method="POST" {...getFormProps(form)} className="space-y-6">
       <AuthenticityTokenInput />
       <HoneypotInputs />
-      <div className="input-group">
-        <Label htmlFor={fields.email.id} text="Email address" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor={fields.email.id}
+          text="Email address"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.email, { type: 'email' }),
@@ -40,15 +44,19 @@ export default function LoginForm() {
         <FormFieldErrors field={fields.email} />
       </div>
 
-      <div className="input-group">
-        <Label htmlFor={fields.password.id} text="Password" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor={fields.password.id}
+          text="Password"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText fieldAttributes={{ ...getInputProps(fields.password, { type: 'password' }), autoComplete: 'off' }} />
         <FormFieldErrors field={fields.password} />
       </div>
 
       <div className="flex items-center justify-between">
         <RememberMe />
-        <Hyperlink children={'Forgot password?'} fieldAttributes={{ href: '/forgot-password' }} />
+        <Hyperlink children={'Forgot password?'} fieldAttributes={{ href: '/password/reset' }} />
       </div>
 
       <SubmitButton

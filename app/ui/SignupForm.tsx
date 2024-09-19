@@ -29,8 +29,12 @@ export default function SignupForm() {
     <Form method="POST" {...getFormProps(form)} className="space-y-3">
       <AuthenticityTokenInput />
       <HoneypotInputs />
-      <div className="input-group">
-        <Label htmlFor={fields.firstName.id} text="First name" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor={fields.firstName.id}
+          text="First name"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.firstName, { type: 'text' }),
@@ -42,8 +46,12 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.firstName} />
       </div>
 
-      <div className="input-group">
-        <Label htmlFor={fields.lastName.id} text="Last name" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor={fields.lastName.id}
+          text="Last name"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.lastName, { type: 'text' }),
@@ -54,8 +62,12 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.lastName} />
       </div>
 
-      <div className="input-group">
-        <Label htmlFor={fields.username.id} text="Username" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor={fields.username.id}
+          text="Username"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.username, { type: 'text' }),
@@ -66,8 +78,12 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.username} />
       </div>
 
-      <div className="input-group">
-        <Label htmlFor={fields.email.id} text="Email address" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor={fields.email.id}
+          text="Email address"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.email, { type: 'email' }),
@@ -78,8 +94,8 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.email} />
       </div>
 
-      <div className="input-group">
-        <Label htmlFor="password" text="Password" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label htmlFor="password" text="Password" classNames="block text-sm font-medium leading-6 text-zinc-50" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.password, { type: 'password' }),
@@ -90,8 +106,12 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.password} />
       </div>
 
-      <div className="input-group">
-        <Label htmlFor="confirm-password" text="Confirm password" classNames="label-input-text" />
+      <div className="flex flex-col gap-y-2">
+        <Label
+          htmlFor="confirm-password"
+          text="Confirm password"
+          classNames="block text-sm font-medium leading-6 text-zinc-50"
+        />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.confirmPassword, { type: 'password' }),
