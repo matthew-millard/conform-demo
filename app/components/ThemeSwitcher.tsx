@@ -1,11 +1,12 @@
 import { getFormProps, useForm } from '@conform-to/react';
 import { parseWithZod } from '@conform-to/zod';
-import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useFetcher } from '@remix-run/react';
 import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
 import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { action, updateThemeActionIntent } from '~/root';
 import { ThemeSwitcherSchema } from '~/schemas';
+import { Icon } from '../components';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 
 export type Theme = 'light' | 'dark';
 export const fetcherKey = 'update-theme';
@@ -24,21 +25,21 @@ export default function ThemeSwitcher({ userPreference }: { userPreference: Them
   const nextMode = mode === 'light' ? 'dark' : 'light';
 
   return (
-    <fetcher.Form method="POST" action="/" {...getFormProps(form)}>
+    <fetcher.Form method="POST" action="/" {...getFormProps(form)} className="flex items-center px-4 py-2">
       <AuthenticityTokenInput />
       <HoneypotInputs />
       <input type="hidden" name="theme" value={nextMode} />
-      <button type="submit" name="intent" value={updateThemeActionIntent} className="text-white">
+      <button type="submit" name="intent" value={updateThemeActionIntent}>
         {mode === 'light' ? (
-          <span className="text-text-color-muted">
-            <SunIcon />
+          <Icon>
+            <SunIcon className="h-5 w-5" />
             <span className="sr-only">Light</span>
-          </span>
+          </Icon>
         ) : (
-          <span className="text-text-color-muted">
-            <MoonIcon />
+          <Icon>
+            <MoonIcon className="h-5 w-5" />
             <span className="sr-only">Dark</span>
-          </span>
+          </Icon>
         )}
       </button>
     </fetcher.Form>

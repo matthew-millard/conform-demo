@@ -30,6 +30,8 @@
   "dependencies": {
     "@conform-to/react": "^1.1.5",
     "@conform-to/zod": "^1.1.5",
+    "@headlessui/react": "^2.1.8",
+    "@heroicons/react": "^2.1.5",
     "@prisma/client": "^5.19.1",
     "@radix-ui/react-icons": "^1.3.0",
     "@remix-run/express": "^2.11.2",

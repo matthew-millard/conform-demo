@@ -3,7 +3,7 @@ import { signup } from '~/.server/auth';
 import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
 import { parseWithZodAndCheckUniqueness } from '~/.server/validation';
-import { Hyperlink, Logo } from '~/components';
+import { Hyperlink, Logo, PreTextWithLink } from '~/components';
 import { SignupForm } from '~/ui';
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -40,15 +40,12 @@ export default function SignupRoute() {
       <div className="px-6 pt-12 pb-6 sm:px-12">
         <SignupForm />
         <p className="pt-3">
-          By signing up, you agree to Conform's{' '}
-          <Hyperlink children="Terms of Service" fieldAttributes={{ href: '/terms' }} /> and{' '}
-          <Hyperlink children="Privacy Policy" fieldAttributes={{ href: '/privacy' }} />
+          By signing up, you agree to Conform's <Hyperlink text="Terms of Service" to="/terms" /> and{' '}
+          <Hyperlink text="Privacy Policy" to="/privacy" />
         </p>
       </div>
 
-      <p className="text-center">
-        <Hyperlink children=" Already have an account?" fieldAttributes={{ href: '/login' }} />
-      </p>
+      <PreTextWithLink preText="Already have an account?" text="Log in" to="/login" />
     </div>
   );
 }
