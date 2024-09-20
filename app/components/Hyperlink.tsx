@@ -1,15 +1,22 @@
-type HyperlinkProps = {
-  fieldAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
-  children: React.ReactNode;
+import { Link } from '@remix-run/react';
+import React from 'react';
+
+export type HyperlinkProps = {
+  text: string;
+  to: string;
+  title?: string;
+  target?: React.AnchorHTMLAttributes<HTMLAnchorElement>['target'];
 };
 
-export default function Hyperlink({ fieldAttributes, children }: HyperlinkProps) {
+export default function Hyperlink({ to, text, title, target }: HyperlinkProps) {
   return (
-    <a
-      {...fieldAttributes}
-      className="font-semibold text-zinc-400 hover:text-zinc-200 text-sm leading-6  focus-visible:outline focus-visible:outline-2 focus:ring-violet-600 focus-visible:outline-violet-600 rounded-sm"
+    <Link
+      to={to}
+      title={title}
+      target={target}
+      className="text-hyperlink-color hover:text-hyperlink-color-hover  focus-visible:outline focus-visible:outline-2 focus:ring-ring-color focus-visible:outline-ring-color rounded-sm"
     >
-      {children}
-    </a>
+      {text}
+    </Link>
   );
 }

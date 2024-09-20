@@ -1,5 +1,5 @@
 import { useOutletContext } from '@remix-run/react';
-import { ThemeSwitcher } from '~/components';
+import { Header } from '~/components';
 import { ContextType } from '~/root';
 
 export default function IndexRoute() {
@@ -7,8 +7,7 @@ export default function IndexRoute() {
 
   return (
     <div>
-      <h1>Index Route</h1>
-      <ThemeSwitcher userPreference={theme} />
+      <Header theme={theme} />
     </div>
   );
 }

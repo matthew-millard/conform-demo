@@ -5,7 +5,7 @@ import { login, sessionKey } from '~/.server/auth';
 import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
 import { getCookie, sessionStorage } from '~/.server/session';
-import { Hyperlink, Logo } from '~/components';
+import { Logo, PreTextWithLink } from '~/components';
 import { LoginSchema } from '~/schemas/auth';
 import { LoginForm } from '~/ui';
 
@@ -64,9 +64,8 @@ export default function LoginRoute() {
       <div className="px-6 py-12 sm:px-12">
         <LoginForm />
       </div>
-      <p className="text-center">
-        Need an account? <Hyperlink children="Sign up here" fieldAttributes={{ href: '/signup' }} />
-      </p>
+
+      <PreTextWithLink preText="Need an account?" text="Sign up here" to="/signup" />
     </div>
   );
 }
