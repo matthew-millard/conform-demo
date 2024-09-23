@@ -30,11 +30,7 @@ export default function SignupForm() {
       <AuthenticityTokenInput />
       <HoneypotInputs />
       <div className="flex flex-col gap-y-2">
-        <Label
-          htmlFor={fields.firstName.id}
-          text="First name"
-          classNames="block text-sm font-medium leading-6 text-zinc-50"
-        />
+        <Label htmlFor={fields.firstName.id} text="First name" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.firstName, { type: 'text' }),
@@ -47,11 +43,7 @@ export default function SignupForm() {
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <Label
-          htmlFor={fields.lastName.id}
-          text="Last name"
-          classNames="block text-sm font-medium leading-6 text-zinc-50"
-        />
+        <Label htmlFor={fields.lastName.id} text="Last name" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.lastName, { type: 'text' }),
@@ -63,11 +55,7 @@ export default function SignupForm() {
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <Label
-          htmlFor={fields.username.id}
-          text="Username"
-          classNames="block text-sm font-medium leading-6 text-zinc-50"
-        />
+        <Label htmlFor={fields.username.id} text="Username" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.username, { type: 'text' }),
@@ -79,11 +67,7 @@ export default function SignupForm() {
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <Label
-          htmlFor={fields.email.id}
-          text="Email address"
-          classNames="block text-sm font-medium leading-6 text-zinc-50"
-        />
+        <Label htmlFor={fields.email.id} text="Email address" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.email, { type: 'email' }),
@@ -95,7 +79,7 @@ export default function SignupForm() {
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <Label htmlFor="password" text="Password" classNames="block text-sm font-medium leading-6 text-zinc-50" />
+        <Label htmlFor="password" text="Password" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.password, { type: 'password' }),
@@ -107,11 +91,7 @@ export default function SignupForm() {
       </div>
 
       <div className="flex flex-col gap-y-2">
-        <Label
-          htmlFor="confirm-password"
-          text="Confirm password"
-          classNames="block text-sm font-medium leading-6 text-zinc-50"
-        />
+        <Label htmlFor="confirm-password" text="Confirm password" />
         <InputText
           fieldAttributes={{
             ...getInputProps(fields.confirmPassword, { type: 'password' }),
