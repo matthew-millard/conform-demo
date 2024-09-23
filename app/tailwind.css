@@ -5,7 +5,7 @@
 @layer base {
   /* Font sizes */
   h2 {
-    @apply text-xl lg:text-2xl font-bold;
+    @apply text-2xl sm:text-3xl tracking-tight  font-black;
   }
 
   :root {
@@ -39,10 +39,13 @@
     --text-color-muted-extra: var(--zinc-500);
     --border-color: var(--zinc-300);
     --border-color-subtle: var(--zinc-200);
-    --app-background-color: var(--zinc-50);
+    --app-background-color: var(--zinc-100);
     --header-background-color: var(--zinc-50);
-    --card-background-color: #fff;
-    --card-border-color: var(--zinc-300);
+    --card-background-color: var(--zinc-50);
+    --card-border-color: var(--border-color);
+
+    --checkbox-background-color: var(--catalina-blue-500);
+    --checkbox-border-color: var(--catalina-blue-500);
 
     --hyperlink-color: var(--catalina-blue-500);
     --hyperlink-color-hover: var(--catalina-blue-600);
@@ -57,7 +60,7 @@
     --popover-button-background-color: var(--zinc-100);
     --popover-button-border-color: var(--zinc-200);
     --popover-panel-background-color: var(--zinc-50);
-    --ring-color: var(--catalina-blue-600);
+    --ring-color: var(--catalina-blue-500);
     --icon-text-color: var(--zinc-950);
     --icon-text-color-hover: var(--zinc-600);
     --icon-text-color-active: var(--zinc-500);
@@ -72,6 +75,7 @@
     --input-text-color: var(--zinc-800);
     --input-background-color: #fff;
     --input-border-color: var(--zinc-300);
+    --input-placeholder-color: var(--zinc-400);
   }
 
   .dark {
@@ -95,6 +99,7 @@
     --input-text-color: var(--zinc-50);
     --input-background-color: var(--zinc-900);
     --input-border-color: var(--zinc-600);
+    --input-placeholder-color: var(--zinc-700);
     --icon-text-color: #fff;
     --icon-text-color-hover: var(--zinc-300);
     --icon-text-color-active: var(--zinc-400);

@@ -57,11 +57,10 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function LoginRoute() {
   return (
-    <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-lg sm:bg-zinc-800/20 sm:mx-auto sm:w-full sm:max-w-[480px]">
-      <Logo />
-      <h2 className="mt-8 text-center">Log in to your account</h2>
+    <div className="flex flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:bg-card-background-color sm:border sm:border-card-border-color sm:mx-auto sm:w-full sm:max-w-[480px]">
+      <h2 className="mt-10 text-center">Log in to your account</h2>
 
-      <div className="px-6 py-12 sm:px-12">
+      <div className="px-6 pt-10 sm:px-12">
         <LoginForm />
       </div>
 

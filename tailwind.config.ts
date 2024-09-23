@@ -15,6 +15,10 @@ export default {
         'header-background-color': 'var(--header-background-color)',
         'card-background-color': 'var(--card-background-color)',
         'card-border-color': 'var(--card-border-color)',
+
+        'checkbox-background-color': 'var(--checkbox-background-color)',
+        'checkbox-border-color': 'var(--checkbox-border-color)',
+
         'button-primary-color': 'var(--primary-button-color)',
         'button-primary-text-color': 'var(--primary-button-text-color)',
         'button-primary-color-hover': 'var(--primary-button-color-hover)',
@@ -44,6 +48,7 @@ export default {
         'input-text-color': 'var(--input-text-color)',
         'input-background-color': 'var(--input-background-color)',
         'input-border-color': 'var(--input-border-color)',
+        'input-placeholder-color': 'var(--input-placeholder-color)',
       },
     },
   },

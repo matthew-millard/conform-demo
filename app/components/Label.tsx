@@ -1,12 +1,18 @@
+import classNames from '~/utils/classNames';
+
 type LabelProps = {
   htmlFor: string;
   text: string;
-  classNames?: string;
+  classes?: string;
 };
 
-export default function Label({ htmlFor, text, classNames }: LabelProps) {
+export default function Label({ htmlFor, text, classes }: LabelProps) {
+  const combinedClasses = classNames(
+    'block text-sm font-semibold leading-6 text-input-text-color',
+    classes ? classes : ''
+  );
   return (
-    <label htmlFor={htmlFor} className={classNames}>
+    <label htmlFor={htmlFor} className={combinedClasses}>
       {text}
     </label>
   );
