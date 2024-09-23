@@ -14,7 +14,7 @@ export default function Hyperlink({ to, text, title, target }: HyperlinkProps) {
       to={to}
       title={title}
       target={target}
-      className="text-hyperlink-color hover:text-hyperlink-color-hover  focus-visible:outline focus-visible:outline-2 focus:ring-ring-color focus-visible:outline-ring-color rounded-sm"
+      className=" font-bold text-sm  text-hyperlink-color hover:text-hyperlink-color-hover  focus-visible:outline focus-visible:outline-2 focus:ring-ring-color focus-visible:outline-ring-color rounded-sm"
     >
       {text}
     </Link>
