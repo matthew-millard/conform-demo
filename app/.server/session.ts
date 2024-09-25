@@ -1,5 +1,7 @@
 import { createCookieSessionStorage } from '@remix-run/node';
-import { cookiePrefix } from './auth';
+import { cookiePrefix } from './config';
+
+console.log('cookiePrefix:', cookiePrefix);
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -19,6 +21,11 @@ export const sessionStorage = createCookieSessionStorage({
 });
 
 export async function getCookie(request: Request) {
+  const cookie = request.headers.get('Cookie');
+  return sessionStorage.getSession(cookie);
+}
+
+export async function getSession(request: Request) {
   const cookie = request.headers.get('Cookie');
   return sessionStorage.getSession(cookie);
 }

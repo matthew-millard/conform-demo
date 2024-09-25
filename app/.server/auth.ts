@@ -1,12 +1,14 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from '~/utils/db.server';
 import type { SignupSubmissionValues } from './validation';
+import { getSession } from './session';
+import { redirect } from '@remix-run/react';
+import { safeRedirect } from 'remix-utils/safe-redirect';
+import { combineResponseInits } from '~/utils/misc';
+import { sessionKey } from './config';
 
 // Cookie Expiration Time
 const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30; // 30 days
-
-export const sessionKey = 'sessionId';
-export const cookiePrefix = 'CONFORM_DEMO_APP';
 
 export function getSessionExpirationDate() {
   const expirationDate = new Date(Date.now() + SESSION_EXPIRATION_TIME);
@@ -74,4 +76,44 @@ export async function login({ email, password }: { email: string; password: stri
   });
 
   return session;
+}
+
+export async function logout(
+  {
+    request,
+    redirectTo = '/',
+  }: {
+    request: Request;
+    redirectTo?: string;
+  },
+  responseInit?: ResponseInit
+) {
+  const cookieSession = await sessionStorage.getSession(request.headers.get('cookie'));
+  const sessionId = cookieSession.get(sessionKey);
+  void prisma.session.delete({ where: { id: sessionId } }).catch(() => {});
+
+  throw redirect(
+    safeRedirect(redirectTo),
+    combineResponseInits(responseInit, {
+      headers: {
+        'set-cookie': await sessionStorage.destroySession(cookieSession),
+      },
+    })
+  );
+}
+
+export async function getUserId(request: Request) {
+  const cookieSession = await getSession(request);
+  const sessionId = cookieSession.get(sessionKey);
+
+  if (!sessionId) return null;
+
+  const session = await prisma.session.findUnique({
+    where: { id: sessionId },
+    select: { userId: true },
+  });
+  if (!session) {
+    throw await logout({ request });
+  }
+  return session.userId;
 }

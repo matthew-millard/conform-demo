@@ -8,6 +8,7 @@ import { AuthenticityTokenProvider } from 'remix-utils/csrf/react';
 import { getThemeFromCookie, updateTheme } from './.server/theme';
 import { Theme } from './components/ThemeSwitcher';
 import { useTheme } from './hooks';
+import { getUserId } from './.server/auth';
 
 export const updateThemeActionIntent = 'update-theme';
 
@@ -37,11 +38,13 @@ export async function action({ request }: LoaderFunctionArgs) {
 export async function loader({ request }: LoaderFunctionArgs) {
   const [csrfToken, csrfCookieHeader] = await csrf.commitToken(request);
   const theme = getThemeFromCookie(request);
+  const userId = await getUserId(request);
 
   const data = {
     csrfToken,
     honeypotInputProps: honeypot.getInputProps(),
     theme: theme as Theme,
+    userId,
   };
 
   return json(data, {

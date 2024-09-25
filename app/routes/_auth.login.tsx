@@ -1,11 +1,12 @@
 import { parseWithZod } from '@conform-to/zod';
 import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
 import { z } from 'zod';
-import { login, sessionKey } from '~/.server/auth';
+import { login } from '~/.server/auth';
+import { sessionKey } from '~/.server/config';
 import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
 import { getCookie, sessionStorage } from '~/.server/session';
-import { Logo, PreTextWithLink } from '~/components';
+import { PreTextWithLink } from '~/components';
 import { LoginSchema } from '~/schemas/auth';
 import { LoginForm } from '~/ui';
 
@@ -44,6 +45,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const { session, rememberMe } = submission.value;
 
   const cookieSession = await getCookie(request);
+
   cookieSession.set(sessionKey, session.id);
 
   return redirect('/', {

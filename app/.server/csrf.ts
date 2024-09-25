@@ -1,6 +1,6 @@
 import { CSRF, CSRFError } from 'remix-utils/csrf/server';
 import { createCookie } from '@remix-run/node';
-import { cookiePrefix } from './auth';
+import { cookiePrefix } from './config';
 
 export const cookie = createCookie(`${cookiePrefix}_csrfToken`, {
   path: '/',
