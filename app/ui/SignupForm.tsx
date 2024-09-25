@@ -26,7 +26,7 @@ export default function SignupForm() {
   });
 
   return (
-    <Form method="POST" {...getFormProps(form)} className="space-y-3">
+    <Form method="POST" {...getFormProps(form)} className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
       <AuthenticityTokenInput />
       <HoneypotInputs />
       <div className="flex flex-col gap-y-2">
@@ -37,6 +37,7 @@ export default function SignupForm() {
             autoFocus: true,
             autoComplete: 'off',
             required: true,
+            placeholder: 'John',
           }}
         />
         <FormFieldErrors field={fields.firstName} />
@@ -49,6 +50,7 @@ export default function SignupForm() {
             ...getInputProps(fields.lastName, { type: 'text' }),
             autoComplete: 'off',
             required: true,
+            placeholder: 'Doe',
           }}
         />
         <FormFieldErrors field={fields.lastName} />
@@ -61,6 +63,7 @@ export default function SignupForm() {
             ...getInputProps(fields.username, { type: 'text' }),
             autoComplete: 'off',
             required: true,
+            placeholder: 'johndoe',
           }}
         />
         <FormFieldErrors field={fields.username} />
@@ -102,12 +105,14 @@ export default function SignupForm() {
         <FormFieldErrors field={fields.confirmPassword} />
       </div>
 
-      <SubmitButton
-        fieldAttributes={{ form: form.id, name: 'intent', value: signupFormActionIntent }}
-        text="Sign up"
-        isPending={isPending}
-        pendingText="Signing up..."
-      />
+      <div className="sm:col-span-2">
+        <SubmitButton
+          fieldAttributes={{ form: form.id, name: 'intent', value: signupFormActionIntent }}
+          text="Sign up"
+          isPending={isPending}
+          pendingText="Signing up..."
+        />
+      </div>
       <FormErrors form={form} />
     </Form>
   );
