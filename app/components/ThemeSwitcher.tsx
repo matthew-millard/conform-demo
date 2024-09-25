@@ -25,7 +25,7 @@ export default function ThemeSwitcher({ userPreference }: { userPreference: Them
   const nextMode = mode === 'light' ? 'dark' : 'light';
 
   return (
-    <fetcher.Form method="POST" action="/" {...getFormProps(form)} className="flex items-center px-4 py-2">
+    <fetcher.Form method="POST" action="/" {...getFormProps(form)} className="flex items-center">
       <AuthenticityTokenInput />
       <HoneypotInputs />
       <input type="hidden" name="theme" value={nextMode} />

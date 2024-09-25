@@ -1,9 +1,9 @@
 import * as cookie from 'cookie';
 import type { Theme } from '~/components/ThemeSwitcher';
-import { cookiePrefix } from './auth';
 import { parseWithZod } from '@conform-to/zod';
 import { ThemeSwitcherSchema } from '~/schemas';
 import { json } from '@remix-run/node';
+import { cookiePrefix } from './config';
 
 const themeKey = 'theme';
 

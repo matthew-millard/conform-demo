@@ -14,6 +14,7 @@ import LinkButton from './LinkButton';
 import LinkWithPrefetch from './LinkWithPrefetch';
 import Icon from './Icon';
 import MenuToggle from './MenuToggle';
+import LogoutForm from './LogoutForm';
 
 export {
   Logo,
@@ -32,4 +33,5 @@ export {
   MenuToggle,
   PreTextWithLink,
   Hyperlink,
+  LogoutForm,
 };
