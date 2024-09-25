@@ -1,7 +1,7 @@
 export default function Logo() {
   return (
     <a
-      className="font-mono inline-block text-[.20rem] leading-[.25rem]  text-logo-text-color whitespace-pre"
+      className={`font-mono inline-block sm:text-[.20rem]  text-[.10rem] sm:leading-[.25rem] text-logo-text-color whitespace-pre`}
       href="https://conform.guide/"
       target="_blank"
       title="Conform Demo"
