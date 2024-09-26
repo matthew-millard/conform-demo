@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { prisma } from '~/utils/db.server';
+import { prisma } from './db';
 import type { SignupSubmissionValues } from './validation';
 import { getSession } from './session';
 import { redirect } from '@remix-run/react';
