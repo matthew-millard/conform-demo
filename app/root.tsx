@@ -9,7 +9,6 @@ import { getThemeFromCookie, updateTheme } from './.server/theme';
 import { Theme } from './components/ThemeSwitcher';
 import { useTheme } from './hooks';
 import { getUserId } from './.server/auth';
-import { prisma } from '~/.server/db';
 import { getUserData } from './.server/utils';
 
 export const updateThemeActionIntent = 'update-theme';

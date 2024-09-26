@@ -117,3 +117,10 @@ export async function getUserId(request: Request) {
   }
   return session.userId;
 }
+
+export async function requireAnonymous(request: Request) {
+  const userId = await getUserId(request);
+  if (userId) {
+    throw redirect('/');
+  }
+}

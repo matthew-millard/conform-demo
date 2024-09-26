@@ -1,7 +1,7 @@
 import { parseWithZod } from '@conform-to/zod';
-import { ActionFunctionArgs, json, redirect } from '@remix-run/node';
+import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from '@remix-run/node';
 import { z } from 'zod';
-import { login } from '~/.server/auth';
+import { login, requireAnonymous } from '~/.server/auth';
 import { sessionKey } from '~/.server/config';
 import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
@@ -11,6 +11,7 @@ import { LoginSchema } from '~/schemas/auth';
 import { LoginForm } from '~/ui';
 
 export async function action({ request }: ActionFunctionArgs) {
+  await requireAnonymous(request);
   const formData = await request.formData();
   await checkCSRF(formData, request.headers);
   checkHoneypot(formData);
@@ -55,6 +56,11 @@ export async function action({ request }: ActionFunctionArgs) {
       }),
     },
   });
+}
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireAnonymous(request);
+  return json({});
 }
 
 export default function LoginRoute() {
