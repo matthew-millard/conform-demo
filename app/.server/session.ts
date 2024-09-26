@@ -1,8 +1,6 @@
 import { createCookieSessionStorage } from '@remix-run/node';
 import { cookiePrefix } from './config';
 
-console.log('cookiePrefix:', cookiePrefix);
-
 const sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret) {

@@ -1,7 +1,7 @@
 import { parseWithZod } from '@conform-to/zod';
 import { z } from 'zod';
 import { SignupSchema } from '~/schemas';
-import { prisma } from '~/utils/db.server';
+import { prisma } from './db';
 
 export type SignupSubmissionValues = Omit<z.infer<typeof SignupSchema>, 'confirmPassword'>;
 

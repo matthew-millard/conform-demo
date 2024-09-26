@@ -9,6 +9,8 @@ import { getThemeFromCookie, updateTheme } from './.server/theme';
 import { Theme } from './components/ThemeSwitcher';
 import { useTheme } from './hooks';
 import { getUserId } from './.server/auth';
+import { prisma } from '~/.server/db';
+import { getUserData } from './.server/utils';
 
 export const updateThemeActionIntent = 'update-theme';
 
@@ -40,11 +42,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const theme = getThemeFromCookie(request);
   const userId = await getUserId(request);
 
+  const user = userId ? await getUserData(userId) : null;
+
   const data = {
     csrfToken,
     honeypotInputProps: honeypot.getInputProps(),
     theme: theme as Theme,
-    userId,
+    user,
   };
 
   return json(data, {
