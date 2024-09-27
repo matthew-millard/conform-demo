@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, useRouteError } from '@remix-run/react';
+import { isRouteErrorResponse, useLocation, useRouteError } from '@remix-run/react';
 import LinkButton from './LinkButton';
 
 type ErrorLayoutProps = {
@@ -7,7 +7,7 @@ type ErrorLayoutProps = {
   message: string | null;
 };
 
-export default function RootErrorBoundary() {
+export default function GenericErrorBoundary() {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
@@ -23,8 +23,8 @@ function ErrorLayout({ status, title, message }: ErrorLayoutProps) {
   return (
     <main className="grid min-h-full place-items-center bg-zinc-950 px-6 py-24 sm:py-32 lg:px-8">
       <div className="text-center">
-        <p className="font-semibold text-primary-color">{status && status}</p>
-        <h1 className="mt-4 font-bold text-zinc-50">{title}</h1>
+        <p className="font-semibold text-primary-color text-3xl">{status && status}</p>
+        <h1 className="mt-4 font-bold text-zinc-50">{title ? title : 'Unknown Error'}</h1>
         <p className="mt-6 leading-7 text-text-color-muted-extra">
           {message ? message : 'Sorry, an unexpected error has occured.'}
         </p>

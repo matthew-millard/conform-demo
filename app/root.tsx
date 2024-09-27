@@ -1,4 +1,4 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError } from '@remix-run/react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import styles from '~/tailwind.css?url';
 import honeypot, { checkHoneypot } from './.server/honeypot';
@@ -10,7 +10,7 @@ import { Theme } from './components/ThemeSwitcher';
 import { useTheme } from './hooks';
 import { getUserId } from './.server/auth';
 import { getUserData } from './.server/utils';
-import { RootErrorBoundary } from './components';
+import { GenericErrorBoundary } from './components';
 
 export const updateThemeActionIntent = 'update-theme';
 
@@ -103,7 +103,7 @@ export default function AppWithProviders() {
 export function ErrorBoundary() {
   return (
     <Document>
-      <RootErrorBoundary />
+      <GenericErrorBoundary />
     </Document>
   );
 }
