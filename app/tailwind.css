@@ -34,6 +34,8 @@
     --catalina-blue-900: #202c73;
     --catalina-blue-950: #161c50;
 
+    --primary-color: var(--catalina-blue-500);
+
     --text-color: var(--zinc-800);
     --text-color-muted: var(--zinc-600);
     --text-color-muted-extra: var(--zinc-500);
