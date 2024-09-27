@@ -124,3 +124,11 @@ export async function requireAnonymous(request: Request) {
     throw redirect('/');
   }
 }
+
+export async function requireUserId(request: Request) {
+  const userId = await getUserId(request);
+  if (!userId) {
+    throw redirect('/login');
+  }
+  return userId;
+}

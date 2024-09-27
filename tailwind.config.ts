@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        'primary-color': 'var(--primary-color)',
         'text-color': 'var(--text-color)',
         'text-color-muted': 'var(--text-color-muted)',
         'text-color-muted-extra': 'var(--text-color-muted-extra)',

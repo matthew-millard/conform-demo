@@ -1,4 +1,4 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData, useRouteError } from '@remix-run/react';
 import { json, LoaderFunctionArgs } from '@remix-run/node';
 import styles from '~/tailwind.css?url';
 import honeypot, { checkHoneypot } from './.server/honeypot';
@@ -10,6 +10,7 @@ import { Theme } from './components/ThemeSwitcher';
 import { useTheme } from './hooks';
 import { getUserId } from './.server/auth';
 import { getUserData } from './.server/utils';
+import { RootErrorBoundary } from './components';
 
 export const updateThemeActionIntent = 'update-theme';
 
@@ -62,7 +63,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 function App() {
   const theme = useTheme();
   return (
-    <html lang="en" className={`${theme}`}>
+    <Document>
+      <Outlet context={{ theme }} />
+    </Document>
+  );
+}
+
+function Document({ children }: { children: React.ReactNode }) {
+  const theme = useTheme();
+  return (
+    <html lang="en" className={`${theme} h-full`}>
       <head>
         <link rel="icon" href="data:image/x-icon;base64,AA" />
         <meta charSet="utf-8" />
@@ -70,8 +80,8 @@ function App() {
         <Meta />
         <Links />
       </head>
-      <body className="bg-app-background-color text-text-color">
-        <Outlet context={{ theme }} />
+      <body className="bg-app-background-color text-text-color h-full">
+        {children}
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -87,5 +97,13 @@ export default function AppWithProviders() {
         <App />
       </HoneypotProvider>
     </AuthenticityTokenProvider>
+  );
+}
+
+export function ErrorBoundary() {
+  return (
+    <Document>
+      <RootErrorBoundary />
+    </Document>
   );
 }
