@@ -1,5 +1,5 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
-import { json, LoaderFunctionArgs } from '@remix-run/node';
+import { json, LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
 import styles from '~/tailwind.css?url';
 import honeypot, { checkHoneypot } from './.server/honeypot';
 import { HoneypotProvider } from 'remix-utils/honeypot/react';
@@ -18,7 +18,7 @@ export type ContextType = {
   theme: Theme;
 };
 
-export const links = () => {
+export const links: LinksFunction = () => {
   return [{ rel: 'stylesheet', href: styles, as: 'style' }];
 };
 
