@@ -3,7 +3,7 @@ import { requireAnonymous, signup } from '~/.server/auth';
 import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
 import { parseWithZodAndCheckUniqueness } from '~/.server/validation';
-import { Hyperlink, Logo, PreTextWithLink } from '~/components';
+import { Hyperlink, PreTextWithLink } from '~/components';
 import { SignupForm } from '~/ui';
 
 export async function action({ request }: ActionFunctionArgs) {
