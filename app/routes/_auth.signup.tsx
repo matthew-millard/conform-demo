@@ -41,7 +41,7 @@ export default function SignupRoute() {
   return (
     <div className="mx-auto sm:w-full sm:max-w-3xl">
       <div className="py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:bg-card-background-color sm:border sm:border-card-border-color">
-        <h2 className="mt-2 text-center">Sign up for an account</h2>
+        <h2 className="mt-2 text-center font-bold">Sign up for an account</h2>
         <p className="mt-2 text-center text-text-color-muted-extra">Create an account to start using Conform</p>
 
         <div className="px-6 pt-14 sm:px-12">
