@@ -15,7 +15,7 @@ import LinkWithPrefetch from './LinkWithPrefetch';
 import Icon from './Icon';
 import MenuToggle from './MenuToggle';
 import LogoutForm from './LogoutForm';
-import RootErrorBoundary from './RootErrorBoundary';
+import GenericErrorBoundary from './GenericErrorBoundary';
 
 export {
   Logo,
@@ -35,5 +35,5 @@ export {
   PreTextWithLink,
   Hyperlink,
   LogoutForm,
-  RootErrorBoundary,
+  GenericErrorBoundary,
 };
