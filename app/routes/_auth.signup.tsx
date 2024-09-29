@@ -40,13 +40,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export default function SignupRoute() {
   return (
     <div className="mx-auto sm:w-full sm:max-w-3xl">
-      <div className="py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:bg-card-background-color sm:border sm:border-card-border-color">
+      <div className="py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:bg-surface sm:border sm:border-around-surface">
         <h2 className="mt-2 text-center font-bold">Sign up for an account</h2>
-        <p className="mt-2 text-center text-text-color-muted-extra">Create an account to start using Hospo Hub</p>
+        <p className="mt-2 text-center text-on-surface-variant">Create an account to start using Hospo Hub</p>
 
         <div className="px-6 pt-14 sm:px-12">
           <SignupForm />
-          <p className="pt-3 text-sm">
+          <p className="pt-3 text-sm text-on-surface">
             By signing up, you agree to Hospo Hub's <Hyperlink text="Terms of Service" to="/terms" /> and{' '}
             <Hyperlink text="Privacy Policy" to="/privacy" />
           </p>

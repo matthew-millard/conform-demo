@@ -10,7 +10,7 @@ export default function SubmitButton({ fieldAttributes, text, isPending, pending
     <button
       type="submit"
       {...fieldAttributes}
-      className="flex w-full justify-center rounded-md bg-button-primary-color px-3 py-1.5 text-sm font-semibold leading-6 text-button-primary-text-color shadow-sm hover:bg-button-primary-color-hover disabled:bg-button-primary-color-disabled active:bg-button-primary-color-active focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring-color"
+      className="flex w-full justify-center rounded-md bg-primary px-3 py-1.5 text-sm font-semibold leading-6 text-on-primary shadow-sm hover:bg-primary-variant disabled:bg-primary-variant active:bg-primary-variant focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-50"
     >
       {isPending ? <PendingIndicator pendingText={pendingText} /> : text}
     </button>

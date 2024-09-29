@@ -65,7 +65,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function LoginRoute() {
   return (
-    <div className="flex flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:bg-card-background-color sm:border sm:border-card-border-color sm:mx-auto sm:w-full sm:max-w-[480px]">
+    <div className="flex flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:border sm:border-around-surface sm:mx-auto sm:w-full sm:max-w-[480px]">
       <h2 className="mt-10 text-center font-bold">Log in to your account</h2>
 
       <div className="px-6 pt-10 sm:px-12">

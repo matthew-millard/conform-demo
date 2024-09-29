@@ -12,7 +12,7 @@ export default function Checkbox({ fieldAttributes, defaultChecked }: CheckboxPr
       <input
         {...fieldAttributes}
         type="checkbox"
-        className="peer h-4 w-4 rounded appearance-none border-checkbox-border-color border-2 checked:border-none checked:bg-checkbox-background-color focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:ring-ring-color focus-visible:outline-ring-color"
+        className="peer h-4 w-4 rounded appearance-none border-primary border-2 checked:border-none checked:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus:ring-primary focus-visible:outline-primary"
         checked={checked}
         onChange={e => setChecked(e.target.checked)}
       />

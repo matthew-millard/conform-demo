@@ -6,11 +6,11 @@
   /* Font sizes */
 
   h1 {
-    @apply text-3xl tracking-tight sm:text-5xl;
+    @apply text-3xl tracking-tight sm:text-5xl text-on-surface;
   }
 
   h2 {
-    @apply text-2xl sm:text-3xl tracking-tight;
+    @apply text-2xl sm:text-3xl tracking-tight text-on-surface;
   }
 
   :root {
@@ -27,99 +27,44 @@
     --zinc-900: #18181b;
     --zinc-950: #0e0e11;
 
-    --catalina-blue-50: #ecf4ff;
-    --catalina-blue-100: #ddebff;
-    --catalina-blue-200: #c2daff;
-    --catalina-blue-300: #9dc1ff;
-    --catalina-blue-400: #769cff;
-    --catalina-blue-500: #5578ff;
-    --catalina-blue-600: #374ef4;
-    --catalina-blue-700: #2a3cd8;
-    --catalina-blue-800: #2536ae;
-    --catalina-blue-900: #202c73;
-    --catalina-blue-950: #161c50;
+    /* 'blue-violet': {
+      '50': '#f0f3fd',
+      '100': '#e4e9fb',
+      '200': '#cfd7f6',
+      '300': '#b1bdf0',
+      '400': '#919ae8',
+      '500': '#767ade',
+      '600': '#615ccf',
+      '700': '#5049b3',
+      '800': '#444093',
+      '900': '#3b3976',
+      '950': '#242244',
+  }, */
 
-    --primary-color: var(--catalina-blue-500);
+    --primary: #5049b3;
+    --primary-variant: #919ae8;
+    --secondary: #03dac6;
 
-    --text-color: var(--zinc-800);
-    --text-color-muted: var(--zinc-600);
-    --text-color-muted-extra: var(--zinc-500);
-    --text-color-muted-extra-hover: var(--zinc-600);
-    --border-color: var(--zinc-300);
-    --border-color-subtle: var(--zinc-200);
-    --app-background-color: var(--zinc-100);
-    --header-background-color: var(--zinc-50);
-    --card-background-color: var(--zinc-50);
-    --card-border-color: var(--border-color);
-    --backdrop-background-color: rgb(24, 24, 27, 0.9); /* zinc-900 */
-    --checkbox-background-color: var(--catalina-blue-500);
-    --checkbox-border-color: var(--catalina-blue-500);
+    --background: var(--zinc-50);
+    --surface: var(--zinc-50);
+    --error: #b00020;
 
-    --hyperlink-color: var(--catalina-blue-500);
-    --hyperlink-color-hover: var(--catalina-blue-600);
-    --primary-button-color: var(--catalina-blue-500);
-    --primary-button-color-hover: var(--catalina-blue-600);
-    --primary-button-color-active: var(--catalina-blue-700);
-    --primary-button-color-disabled: var(--catalina-blue-950);
-    --primary-button-text-color: #fff;
-    --primary-button-text-color-disabled: var(--catalina-blue-700);
-    --secondary-button-color: var(--zinc-100);
-    --popover-button-icon-color: var(--zinc-500);
-    --popover-button-background-color: var(--zinc-100);
-    --popover-button-border-color: var(--zinc-200);
-    --popover-panel-background-color: var(--zinc-50);
-    --ring-color: var(--catalina-blue-500);
-    --icon-text-color: var(--zinc-950);
-    --icon-text-color-hover: var(--zinc-600);
-    --icon-text-color-active: var(--zinc-500);
-    --icon-color-primary: var(--catalina-blue-500);
-    --icon-color-primary-hover: var(--catalina-blue-600);
-    --icon-color-primary-active: var(--catalina-blue-700);
-    --link-text-color: var(--zinc-950);
-    --link-text-color-hover: var(--zinc-600);
-    --link-text-color-active: var(--zinc-500);
-    --link-background-color-hover: var(--zinc-100);
-    --logo-background-color: var(--zinc-800);
-    --logo-text-color: var(--zinc-950);
-    --input-text-color: var(--zinc-800);
-    --input-background-color: #fff;
-    --input-border-color: var(--zinc-300);
-    --input-placeholder-color: var(--zinc-400);
+    --on-primary: var(--zinc-50);
+    --on-secondary: var(--zinc-950);
+    --on-surface: var(--zinc-950);
+    --on-surface-variant: var(--zinc-500);
+    --on-error: var(--zinc-50);
+    --on-surface-hover: var(--zinc-100);
+
+    --around-surface: var(--zinc-300);
   }
 
   .dark {
-    --text-color: var(--zinc-100);
-    --text-color-muted: var(--zinc-300);
-    --text-color-muted-extra: var(--zinc-400);
-    --text-color-muted-extra-hover: var(--zinc-300);
-    --border-color: var(--zinc-700);
-    --subtle-border-color: var(--zinc-800);
-    --background-muted: var(--zinc-900);
-    --background-muted-extra: var(--zinc-800);
-    --app-background-color: var(--zinc-950);
-    --header-background-color: var(--zinc-950);
-    --card-background-color: var(--zinc-900);
-    --card-border-color: var(--zinc-800);
-    --secondary-button-color: var(--zinc-800);
-    --popover-button-background-color: var(--zinc-900);
-    --popover-button-border-color: var(--zinc-800);
-    --popover-panel-background-color: var(--zinc-900);
-    --logo-background-color: var(--zinc-300);
-    --logo-text-color: #fff;
-    --input-text-color: var(--zinc-50);
-    --input-background-color: var(--zinc-900);
-    --input-border-color: var(--zinc-600);
-    --input-placeholder-color: var(--zinc-700);
-    --icon-text-color: #fff;
-    --icon-text-color-hover: var(--zinc-300);
-    --icon-text-color-active: var(--zinc-400);
-    --link-text-color: #fff;
-    --link-text-color-hover: var(--zinc-300);
-    --link-text-color-active: var(--zinc-400);
-    --link-background-color-hover: var(--zinc-800);
-
-    --primary-button-color: var(--catalina-blue-600);
-    --primary-button-color-hover: var(--catalina-blue-500);
-    --primary-button-color-active: var(--catalina-blue-400);
+    --primary-variant: #3b3976;
+    --background: var(--zinc-950);
+    --surface: var(--zinc-950);
+    --on-surface: var(--zinc-50);
+    --on-surface-hover: var(--zinc-900);
+    --around-surface: var(--zinc-700);
   }
 }
