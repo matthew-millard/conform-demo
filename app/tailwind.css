@@ -44,13 +44,14 @@
     --text-color: var(--zinc-800);
     --text-color-muted: var(--zinc-600);
     --text-color-muted-extra: var(--zinc-500);
+    --text-color-muted-extra-hover: var(--zinc-600);
     --border-color: var(--zinc-300);
     --border-color-subtle: var(--zinc-200);
     --app-background-color: var(--zinc-100);
     --header-background-color: var(--zinc-50);
     --card-background-color: var(--zinc-50);
     --card-border-color: var(--border-color);
-
+    --backdrop-background-color: rgb(24, 24, 27, 0.9); /* zinc-900 */
     --checkbox-background-color: var(--catalina-blue-500);
     --checkbox-border-color: var(--catalina-blue-500);
 
@@ -77,6 +78,7 @@
     --link-text-color: var(--zinc-950);
     --link-text-color-hover: var(--zinc-600);
     --link-text-color-active: var(--zinc-500);
+    --link-background-color-hover: var(--zinc-100);
     --logo-background-color: var(--zinc-800);
     --logo-text-color: var(--zinc-950);
     --input-text-color: var(--zinc-800);
@@ -89,6 +91,7 @@
     --text-color: var(--zinc-100);
     --text-color-muted: var(--zinc-300);
     --text-color-muted-extra: var(--zinc-400);
+    --text-color-muted-extra-hover: var(--zinc-300);
     --border-color: var(--zinc-700);
     --subtle-border-color: var(--zinc-800);
     --background-muted: var(--zinc-900);
@@ -113,5 +116,10 @@
     --link-text-color: #fff;
     --link-text-color-hover: var(--zinc-300);
     --link-text-color-active: var(--zinc-400);
+    --link-background-color-hover: var(--zinc-800);
+
+    --primary-button-color: var(--catalina-blue-600);
+    --primary-button-color-hover: var(--catalina-blue-500);
+    --primary-button-color-active: var(--catalina-blue-400);
   }
 }

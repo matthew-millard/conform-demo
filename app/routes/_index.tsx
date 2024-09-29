@@ -5,19 +5,19 @@ import { ContextType } from '~/root';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Conform Demo' },
+    { title: 'Hospo Hub' },
     {
       name: 'description',
       content:
-        'A demonstration project showcasing form validation and error handling using the Conform library in a Remix application.',
+        'Hospo Hub is the go-to professional networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.',
     },
-    { property: 'og:title', content: 'Conform Demo' },
+    { property: 'og:title', content: 'Hospo Hub' },
     {
       property: 'og:description',
       content:
-        'A demonstration project showcasing form validation and error handling using the Conform library in a Remix application.',
+        'Hospo Hub is the go-to professional networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.',
     },
-    { property: 'og:url', content: 'https://conformdemo.run' },
+    { property: 'og:url', content: 'https://Hospohub.com' },
   ];
 };
 

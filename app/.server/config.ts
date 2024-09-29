@@ -1,2 +1,2 @@
 export const sessionKey = 'sessionId';
-export const cookiePrefix = 'CONFORM_DEMO_APP';
+export const cookiePrefix = 'Hospo_Hub';

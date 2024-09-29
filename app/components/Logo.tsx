@@ -1,17 +1,12 @@
 export default function Logo() {
   return (
     <a
-      className={`font-mono inline-block sm:text-[.20rem]  text-[.10rem] sm:leading-[.25rem] text-logo-text-color whitespace-pre`}
-      href="https://conform.guide/"
+      className={`font-black text-lg sm:text-2xl md:text-3xl inline-block text-logo-text-color`}
+      href="https://hospohub.com/"
       target="_blank"
-      title="Conform Demo"
+      title="Hospo Hub"
     >
-      {` ██████╗ ██████╗ ███╗   ██╗███████╗ ██████╗ ██████╗ ███╗   ███╗    ██████╗ ███████╗███╗   ███╗ ██████╗ 
-██╔════╝██╔═══██╗████╗  ██║██╔════╝██╔═══██╗██╔══██╗████╗ ████║    ██╔══██╗██╔════╝████╗ ████║██╔═══██╗
-██║     ██║   ██║██╔██╗ ██║█████╗  ██║   ██║██████╔╝██╔████╔██║    ██║  ██║█████╗  ██╔████╔██║██║   ██║
-██║     ██║   ██║██║╚██╗██║██╔══╝  ██║   ██║██╔══██╗██║╚██╔╝██║    ██║  ██║██╔══╝  ██║╚██╔╝██║██║   ██║
-╚██████╗╚██████╔╝██║ ╚████║██║     ╚██████╔╝██║  ██║██║ ╚═╝ ██║    ██████╔╝███████╗██║ ╚═╝ ██║╚██████╔╝
- ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝    ╚═════╝ ╚══════╝╚═╝     ╚═╝ ╚═════╝ `}
+      Hospo Hub
     </a>
   );
 }
