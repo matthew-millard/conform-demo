@@ -7,8 +7,7 @@ type LinkWithPrefetchProps = {
 };
 
 export default function LinkWithPrefetch({ to, prefetch = 'intent', children }: LinkWithPrefetchProps) {
-  const classNames =
-    'text-base text-link-text-color hover:text-link-text-color-hover active:text-link-text-color-active font-medium';
+  const classNames = 'text-base text-on-surface hover:text-on-surface-variant font-medium';
 
   return (
     <Link to={to} prefetch={prefetch} className={classNames}>

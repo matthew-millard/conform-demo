@@ -80,7 +80,7 @@ function Document({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-app-background-color text-text-color h-full">
+      <body className="bg-background h-full">
         {children}
         <ScrollRestoration />
         <Scripts />
