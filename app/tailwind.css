@@ -14,7 +14,7 @@
   }
 
   :root {
-    /* Colors */
+    /* 'zinc' */
     --zinc-50: #fafafa;
     --zinc-100: #f4f4f5;
     --zinc-200: #e4e4e7;
@@ -27,23 +27,21 @@
     --zinc-900: #18181b;
     --zinc-950: #0e0e11;
 
-    /* 'blue-violet': {
-      '50': '#f0f3fd',
-      '100': '#e4e9fb',
-      '200': '#cfd7f6',
-      '300': '#b1bdf0',
-      '400': '#919ae8',
-      '500': '#767ade',
-      '600': '#615ccf',
-      '700': '#5049b3',
-      '800': '#444093',
-      '900': '#3b3976',
-      '950': '#242244',
-  }, */
+    /* 'dodger-blue' */
+    --dodger-blue-50: #f1f7fe;
+    --dodger-blue-100: #e2effc;
+    --dodger-blue-200: #bedef9;
+    --dodger-blue-300: #84c3f5;
+    --dodger-blue-400: #42a3ee;
+    --dodger-blue-500: #1e8ee5;
+    --dodger-blue-600: #0c6bbd;
+    --dodger-blue-700: #0b5599;
+    --dodger-blue-800: #0e497e;
+    --dodger-blue-900: #113e69;
+    --dodger-blue-950: #0b2746;
 
-    --primary: #5049b3;
-    --primary-variant: #919ae8;
-    --secondary: #03dac6;
+    --primary: var(--dodger-blue-500);
+    --primary-variant: var(--dodger-blue-600);
 
     --background: var(--zinc-50);
     --surface: var(--zinc-50);
@@ -60,7 +58,7 @@
   }
 
   .dark {
-    --primary-variant: #3b3976;
+    --primary-variant: var(--dodger-blue-400);
     --background: var(--zinc-950);
     --surface: var(--zinc-950);
     --on-surface: var(--zinc-50);
