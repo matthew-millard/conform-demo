@@ -1,6 +1,7 @@
 import { MetaFunction } from '@remix-run/node';
 import { useOutletContext } from '@remix-run/react';
 import { Header, LinkButton } from '~/components';
+import { useTheme } from '~/hooks';
 import { ContextType } from '~/root';
 
 export const meta: MetaFunction = () => {
@@ -22,12 +23,10 @@ export const meta: MetaFunction = () => {
 };
 
 export default function IndexRoute() {
-  const { theme } = useOutletContext<ContextType>();
-
   return (
     <div>
       <div>
-        <Header theme={theme} />
+        <Header />
       </div>
 
       <div className="mx-auto max-w-2xl py-16 sm:py-32 lg:py-48 px-4">

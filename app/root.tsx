@@ -10,7 +10,11 @@ import { Theme } from './components/ThemeSwitcher';
 import { useTheme } from './hooks';
 import { getUserId } from './.server/auth';
 import { getUserData } from './.server/utils';
-import { GenericErrorBoundary } from './components';
+import { GenericErrorBoundary, Toast } from './components';
+import { toastSessionStorage } from './.server/toast';
+import { combineHeaders } from './utils/misc';
+import { toast as showToast, Toaster } from 'sonner';
+import { useEffect } from 'react';
 
 export const updateThemeActionIntent = 'update-theme';
 
@@ -42,29 +46,44 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const theme = getThemeFromCookie(request);
   const userId = await getUserId(request);
 
+  const cookie = request.headers.get('cookie');
+  const toastCookieSession = await toastSessionStorage.getSession(cookie);
+  const toast = toastCookieSession.get('toast');
+  toastCookieSession.unset('toast');
+
   const user = userId ? await getUserData(userId) : null;
 
   const data = {
     csrfToken,
     honeypotInputProps: honeypot.getInputProps(),
     theme: theme as Theme,
+    toast,
     user,
   };
 
-  return json(data, {
-    headers: csrfCookieHeader
+  const combinedHeader = combineHeaders(
+    csrfCookieHeader
       ? {
           'set-cookie': csrfCookieHeader,
         }
-      : undefined,
+      : null,
+    {
+      'set-cookie': await toastSessionStorage.commitSession(toastCookieSession),
+    }
+  );
+
+  return json(data, {
+    headers: combinedHeader,
   });
 }
 
 function App() {
-  const theme = useTheme();
+  const data = useLoaderData<typeof loader>();
+
   return (
     <Document>
-      <Outlet context={{ theme }} />
+      <Outlet />
+      {data.toast ? <ShowToast toast={data.toast} /> : null}
     </Document>
   );
 }
@@ -82,6 +101,7 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-background h-full">
         {children}
+        <Toaster position="bottom-right" />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -106,4 +126,28 @@ export function ErrorBoundary() {
       <GenericErrorBoundary />
     </Document>
   );
+}
+
+function ShowToast({
+  toast,
+}: {
+  toast: {
+    id: string;
+    type: 'success' | 'message';
+    title: string;
+    description: string;
+  };
+}) {
+  const { id, type, title, description } = toast;
+
+  useEffect(() => {
+    setTimeout(() => {
+      showToast.custom(t => <Toast t={t} id={id} type={type} title={title} description={description} />);
+    }, 0);
+
+    return () => {
+      showToast.dismiss(id);
+    };
+  }, [id, type, title, description]);
+  return null;
 }
