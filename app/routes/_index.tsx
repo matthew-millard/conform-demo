@@ -1,26 +1,6 @@
-import { MetaFunction } from '@remix-run/node';
-import { useOutletContext } from '@remix-run/react';
+import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
+import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { Header, LinkButton } from '~/components';
-import { useTheme } from '~/hooks';
-import { ContextType } from '~/root';
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: 'Hospo Hub' },
-    {
-      name: 'description',
-      content:
-        'Hospo Hub is the go-to professional networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.',
-    },
-    { property: 'og:title', content: 'Hospo Hub' },
-    {
-      property: 'og:description',
-      content:
-        'Hospo Hub is the go-to professional networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.',
-    },
-    { property: 'og:url', content: 'https://Hospohub.com' },
-  ];
-};
 
 export default function IndexRoute() {
   return (

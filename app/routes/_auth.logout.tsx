@@ -2,7 +2,7 @@ import { ActionFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/react';
 import { checkCSRF } from '~/.server/csrf';
 import { sessionStorage } from '~/.server/session';
-import { toastSessionStorage } from '~/.server/toast';
+import { setToastCookie, toastSessionStorage } from '~/.server/toast';
 import { combineHeaders } from '~/utils/misc';
 
 export async function loader() {
@@ -13,13 +13,11 @@ export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   await checkCSRF(formData, request.headers);
   const cookieSession = await sessionStorage.getSession();
-  const cookie = request.headers.get('cookie');
 
-  const toastCookieSession = await toastSessionStorage.getSession(cookie);
-  toastCookieSession.set('toast', {
+  const toastCookieSession = await setToastCookie(request, {
     type: 'success',
+    description: 'You have been logged out successfully.',
     title: 'Logged out',
-    description: 'Your have been logged out',
   });
 
   const combinedHeaders = combineHeaders(
