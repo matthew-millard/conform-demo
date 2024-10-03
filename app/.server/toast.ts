@@ -1,5 +1,8 @@
 import { createCookieSessionStorage } from '@remix-run/node';
 import { cookiePrefix } from './config';
+import { toast } from 'sonner';
+
+export const toastKey = 'toast';
 
 const sessionSecret = process.env.SESSION_SECRET;
 
@@ -17,3 +20,33 @@ export const toastSessionStorage = createCookieSessionStorage({
     secure: process.env.NODE_ENV === 'production',
   },
 });
+
+export async function setToastCookie(
+  request: Request,
+  value: {
+    type: 'success' | 'info' | 'warning' | 'error';
+    title: string;
+    description: string;
+  }
+) {
+  const toastCookieSession = await getToastCookie(request);
+  toastCookieSession.flash(toastKey, value);
+
+  return toastCookieSession;
+}
+
+export async function getToastCookie(request: Request) {
+  const cookie = request.headers.get('cookie');
+  const toastCookieSession = await toastSessionStorage.getSession(cookie);
+
+  return toastCookieSession;
+}
+
+export async function getToast(request: Request) {
+  const toastCookieSession = await getToastCookie(request);
+  const toast = toastCookieSession.get(toastKey);
+  return {
+    toast,
+    toastCookieSession,
+  };
+}

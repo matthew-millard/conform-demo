@@ -1,5 +1,5 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
-import { json, LinksFunction, LoaderFunctionArgs } from '@remix-run/node';
+import { Links, Meta, Outlet, redirect, Scripts, ScrollRestoration, useLoaderData } from '@remix-run/react';
+import { json, LinksFunction, LoaderFunctionArgs, MetaFunction } from '@remix-run/node';
 import styles from '~/tailwind.css?url';
 import honeypot, { checkHoneypot } from './.server/honeypot';
 import { HoneypotProvider } from 'remix-utils/honeypot/react';
@@ -11,10 +11,11 @@ import { useTheme } from './hooks';
 import { getUserId } from './.server/auth';
 import { getUserData } from './.server/utils';
 import { GenericErrorBoundary, Toast } from './components';
-import { toastSessionStorage } from './.server/toast';
+import { getToast, toastSessionStorage } from './.server/toast';
 import { combineHeaders } from './utils/misc';
 import { toast as showToast, Toaster } from 'sonner';
 import { useEffect } from 'react';
+import { ToastProps } from './components/Toast';
 
 export const updateThemeActionIntent = 'update-theme';
 
@@ -30,7 +31,6 @@ export async function action({ request }: LoaderFunctionArgs) {
   const formData = await request.formData();
   await checkCSRF(formData, request.headers);
   checkHoneypot(formData);
-
   const intent = formData.get('intent') as string;
 
   switch (intent) {
@@ -45,11 +45,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const [csrfToken, csrfCookieHeader] = await csrf.commitToken(request);
   const theme = getThemeFromCookie(request);
   const userId = await getUserId(request);
-
-  const cookie = request.headers.get('cookie');
-  const toastCookieSession = await toastSessionStorage.getSession(cookie);
-  const toast = toastCookieSession.get('toast');
-  toastCookieSession.unset('toast');
+  const { toast, toastCookieSession } = await getToast(request);
 
   const user = userId ? await getUserData(userId) : null;
 
@@ -101,7 +97,7 @@ function Document({ children }: { children: React.ReactNode }) {
       </head>
       <body className="bg-background h-full">
         {children}
-        <Toaster position="bottom-right" />
+        <Toaster />
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -128,26 +124,33 @@ export function ErrorBoundary() {
   );
 }
 
-function ShowToast({
-  toast,
-}: {
-  toast: {
-    id: string;
-    type: 'success' | 'message';
-    title: string;
-    description: string;
-  };
-}) {
-  const { id, type, title, description } = toast;
+type ShowToastArgs = Omit<ToastProps, 'id'>;
+
+function ShowToast({ toast }: { toast: ShowToastArgs }) {
+  const { type, title, description } = toast;
 
   useEffect(() => {
     setTimeout(() => {
-      showToast.custom(t => <Toast t={t} id={id} type={type} title={title} description={description} />);
+      showToast.custom(t => <Toast id={t} type={type} title={title} description={description} />);
     }, 0);
-
-    return () => {
-      showToast.dismiss(id);
-    };
-  }, [id, type, title, description]);
+  }, [type, title, description]);
   return null;
 }
+
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Hospo Hub' },
+    {
+      name: 'description',
+      content:
+        'Hospo Hub is the go-to professional networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.',
+    },
+    { property: 'og:title', content: 'Hospo Hub' },
+    {
+      property: 'og:description',
+      content:
+        'Hospo Hub is the go-to professional networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.',
+    },
+    { property: 'og:url', content: 'https://Hospohub.com' },
+  ];
+};
