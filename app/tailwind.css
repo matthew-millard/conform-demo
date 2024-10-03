@@ -40,8 +40,27 @@
     --dodger-blue-900: #113e69;
     --dodger-blue-950: #0b2746;
 
+    /* 'lima': {
+      '50': '#f6ffe6',
+      '100': '#ebfec9',
+      '200': '#d7fd99',
+      '300': '#bbf95d',
+      '400': '#9eee2d',
+      '500': '#71bd0c',
+      
+      '600': '#60aa06',
+      '700': '#4a810a',
+      '800': '#3c660e',
+      '900': '#345611',
+      '950': '#183003',
+  }, */
+
+    --lima-500: #71bd0c;
+
     --primary: var(--dodger-blue-500);
     --primary-variant: var(--dodger-blue-600);
+
+    --secondary: var(--lima-500);
 
     --background: var(--zinc-50);
     --surface: var(--zinc-50);
@@ -51,6 +70,7 @@
     --on-secondary: var(--zinc-950);
     --on-surface: var(--zinc-950);
     --on-surface-variant: var(--zinc-500);
+
     --on-error: var(--zinc-50);
     --on-surface-hover: var(--zinc-100);
 
@@ -62,6 +82,7 @@
     --background: var(--zinc-950);
     --surface: var(--zinc-950);
     --on-surface: var(--zinc-50);
+
     --on-surface-hover: var(--zinc-900);
     --around-surface: var(--zinc-700);
   }

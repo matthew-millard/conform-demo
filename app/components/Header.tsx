@@ -21,7 +21,7 @@ const links = [
   },
 ];
 
-export default function Header({ theme }: { theme: Theme }) {
+export default function Header() {
   const isLoggedInUser = useOptionalUser();
   return (
     <Popover className="sticky top-0 z-50">
@@ -41,7 +41,7 @@ export default function Header({ theme }: { theme: Theme }) {
 
           <div className="hidden items-center justify-end md:flex md:flex-1 md:gap-x-5 lg:w-0">
             <span className="mr-2">
-              <ThemeSwitcher userPreference={theme} />
+              <ThemeSwitcher />
             </span>
 
             {isLoggedInUser ? (

@@ -7,12 +7,14 @@ import { action, updateThemeActionIntent } from '~/root';
 import { ThemeSwitcherSchema } from '~/schemas';
 import { Icon } from '../components';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
+import { useTheme } from '~/hooks';
 
 export type Theme = 'light' | 'dark';
 export const fetcherKey = 'update-theme';
 
-export default function ThemeSwitcher({ userPreference }: { userPreference: Theme }) {
+export default function ThemeSwitcher() {
   const fetcher = useFetcher<typeof action>({ key: fetcherKey });
+  const userPreference = useTheme();
 
   const [form] = useForm({
     id: 'theme-switcher',

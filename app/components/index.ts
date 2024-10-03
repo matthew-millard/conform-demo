@@ -16,6 +16,7 @@ import Icon from './Icon';
 import MenuToggle from './MenuToggle';
 import LogoutForm from './LogoutForm';
 import GenericErrorBoundary from './GenericErrorBoundary';
+import Toast from './Toast';
 
 export {
   Logo,
@@ -36,4 +37,5 @@ export {
   Hyperlink,
   LogoutForm,
   GenericErrorBoundary,
+  Toast,
 };
