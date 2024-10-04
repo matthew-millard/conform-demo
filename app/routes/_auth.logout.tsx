@@ -1,5 +1,6 @@
 import { ActionFunctionArgs } from '@remix-run/node';
 import { redirect } from '@remix-run/react';
+import { requireUserId } from '~/.server/auth';
 import { checkCSRF } from '~/.server/csrf';
 import { sessionStorage } from '~/.server/session';
 import { setToastCookie, toastSessionStorage } from '~/.server/toast';
@@ -10,6 +11,7 @@ export async function loader() {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
+  await requireUserId(request);
   const formData = await request.formData();
   await checkCSRF(formData, request.headers);
   const cookieSession = await sessionStorage.getSession();

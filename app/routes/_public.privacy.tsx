@@ -1,3 +1,3 @@
 export default function PrivacyRoute() {
-  return <h1 className="text-white">Privacy Route</h1>;
+  return <h1 className="text-on-surface">Privacy Route</h1>;
 }
