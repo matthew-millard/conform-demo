@@ -1,5 +1,5 @@
-import { action } from '~/routes/_auth.signup';
-import { Form, useActionData } from '@remix-run/react';
+import { action, loader } from '~/routes/_auth.signup';
+import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { FormErrors, FormFieldErrors, InputText, Label, SubmitButton } from '~/components';
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
@@ -11,6 +11,7 @@ import { useIsPending } from '~/hooks';
 const signupFormActionIntent = 'sign up';
 
 export default function SignupForm() {
+  const { redirectTo } = useLoaderData<typeof loader>();
   const lastResult = useActionData<typeof action>();
   const isPending = useIsPending({ formIntent: signupFormActionIntent });
 
@@ -20,6 +21,9 @@ export default function SignupForm() {
     constraint: getZodConstraint(SignupSchema),
     shouldValidate: 'onSubmit',
     shouldRevalidate: 'onInput',
+    defaultValue: {
+      redirectTo,
+    },
     onValidate({ formData }) {
       return parseWithZod(formData, { schema: SignupSchema });
     },
@@ -29,6 +33,7 @@ export default function SignupForm() {
     <Form method="POST" {...getFormProps(form)} className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
       <AuthenticityTokenInput />
       <HoneypotInputs />
+      <input {...getInputProps(fields.redirectTo, { type: 'hidden' })} />
       <div className="flex flex-col gap-y-2">
         <Label htmlFor={fields.firstName.id} text="First name" />
         <InputText

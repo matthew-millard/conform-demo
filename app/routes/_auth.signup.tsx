@@ -1,4 +1,5 @@
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { safeRedirect } from 'remix-utils/safe-redirect';
 import { requireAnonymous, signup } from '~/.server/auth';
 import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
@@ -19,7 +20,7 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  const { firstName, lastName, username, email, password } = submission.value;
+  const { firstName, lastName, username, email, password, redirectTo } = submission.value;
 
   const user = await signup({ firstName, lastName, username, email, password });
 
@@ -29,12 +30,15 @@ export async function action({ request }: ActionFunctionArgs) {
     });
   }
 
-  return redirect('/login', 302);
+  return redirect(safeRedirect(redirectTo));
 }
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAnonymous(request);
-  return json({});
+  const url = new URL(request.url);
+  const redirectTo = url.searchParams.get('redirectTo');
+
+  return json({ redirectTo });
 }
 
 export default function SignupRoute() {
