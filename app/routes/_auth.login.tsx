@@ -1,5 +1,7 @@
-import { parseWithZod } from '@conform-to/zod';
+import { getFormProps, getInputProps, useForm } from '@conform-to/react';
+import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { Form, useLoaderData } from '@remix-run/react';
 import { safeRedirect } from 'remix-utils/safe-redirect';
 import { z } from 'zod';
 import { login, requireAnonymous } from '~/.server/auth';
@@ -8,7 +10,7 @@ import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
 import { getCookie, sessionStorage } from '~/.server/session';
 import { PreTextWithLink } from '~/components';
-import { LoginSchema } from '~/schemas/auth';
+import { LoginSchema, RedirectToSchema } from '~/schemas/auth';
 import { LoginForm } from '~/ui';
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -61,10 +63,26 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireAnonymous(request);
-  return json({});
+  const url = new URL(request.url);
+  const redirectTo = url.searchParams.get('redirectTo');
+
+  return json({ redirectTo });
 }
 
 export default function LoginRoute() {
+  const { redirectTo } = useLoaderData<typeof loader>();
+
+  const [form, fields] = useForm({
+    id: 'redirect-path-form',
+    constraint: getZodConstraint(
+      z.object({
+        redirectTo: z.string().optional(),
+      })
+    ),
+    defaultValue: {
+      redirectTo,
+    },
+  });
   return (
     <div className="flex flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 sm:rounded-xl sm:shadow-lg sm:border sm:border-around-surface sm:mx-auto sm:w-full sm:max-w-[480px]">
       <h2 className="mt-10 text-center font-bold">Log in to your account</h2>
@@ -73,7 +91,23 @@ export default function LoginRoute() {
         <LoginForm />
       </div>
 
-      <PreTextWithLink preText="Need an account?" text="Sign up here" to="/signup" />
+      {/* If a redirect path exists, then use the form to pass the value along to the sign up route */}
+      {redirectTo ? (
+        <Form method="get" action="/signup" {...getFormProps(form)}>
+          <input {...getInputProps(fields.redirectTo, { type: 'hidden' })} />
+          <p className="mt-4 text-center text-sm font-medium text-on-surface">
+            Need an account?{' '}
+            <button
+              className=" font-bold text-sm text-primary hover:text-primary-variant  focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary rounded-sm"
+              type="submit"
+            >
+              Sign up here
+            </button>
+          </p>
+        </Form>
+      ) : (
+        <PreTextWithLink preText="Need an account?" text="Sign up here" to="/signup" />
+      )}
     </div>
   );
 }

@@ -38,6 +38,8 @@ export const PasswordSchema = z
   .regex(/[\W_]/, { message: 'Password must contain at least one special character' })
   .regex(/[0-9]/, { message: 'Password must contain at least one number' });
 
+export const RedirectToSchema = z.string().optional();
+
 export const SignupSchema = z
   .object({
     firstName: FirstNameSchema,
@@ -46,6 +48,7 @@ export const SignupSchema = z
     email: EmailSchema,
     password: PasswordSchema,
     confirmPassword: z.string(),
+    redirectTo: RedirectToSchema,
   })
   .refine(({ password, confirmPassword }) => password === confirmPassword, {
     message: "Passwords don't match",
@@ -59,5 +62,5 @@ export const LoginSchema = z.object({
     .transform(value => value.toLowerCase()),
   password: z.string(),
   rememberMe: z.literal('on').optional(),
-  redirectTo: z.string().optional(),
+  redirectTo: RedirectToSchema,
 });
