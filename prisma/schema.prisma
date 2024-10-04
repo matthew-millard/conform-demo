@@ -18,6 +18,7 @@ model User {
   email     String    @unique
   sessions  Session[]
   password  Password?
+  roles     Role[]
 }
 
 model Password {
@@ -35,4 +36,27 @@ model Session {
   userId         String
 
   @@index([userId])
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  action      String // create, read, update, delete
+  entity      String // 
+  access      String // own/any
+  description String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+  roles       Role[]
+
+  @@unique([action, entity, access])
+}
+
+model Role {
+  id          String       @id @default(cuid())
+  name        String
+  description String       @default("")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt()
+  permissions Permission[]
+  users       User[]
 }
