@@ -59,4 +59,5 @@ export const LoginSchema = z.object({
     .transform(value => value.toLowerCase()),
   password: z.string(),
   rememberMe: z.literal('on').optional(),
+  redirectTo: z.string().optional(),
 });

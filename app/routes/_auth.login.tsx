@@ -1,5 +1,6 @@
 import { parseWithZod } from '@conform-to/zod';
 import { ActionFunctionArgs, json, LoaderFunctionArgs, redirect } from '@remix-run/node';
+import { safeRedirect } from 'remix-utils/safe-redirect';
 import { z } from 'zod';
 import { login, requireAnonymous } from '~/.server/auth';
 import { sessionKey } from '~/.server/config';
@@ -43,13 +44,13 @@ export async function action({ request }: ActionFunctionArgs) {
     );
   }
 
-  const { session, rememberMe } = submission.value;
+  const { session, rememberMe, redirectTo } = submission.value;
 
   const cookieSession = await getCookie(request);
 
   cookieSession.set(sessionKey, session.id);
 
-  return redirect('/', {
+  return redirect(safeRedirect(redirectTo), {
     headers: {
       'set-cookie': await sessionStorage.commitSession(cookieSession, {
         expires: rememberMe ? session.expirationDate : undefined,
