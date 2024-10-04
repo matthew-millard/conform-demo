@@ -1,5 +1,3 @@
-import { AuthenticityTokenInput } from 'remix-utils/csrf/react';
-import { HoneypotInputs } from 'remix-utils/honeypot/react';
 import { Header, LinkButton } from '~/components';
 
 export default function IndexRoute() {

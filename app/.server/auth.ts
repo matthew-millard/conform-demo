@@ -132,3 +132,23 @@ export async function requireUserId(request: Request) {
   }
   return userId;
 }
+
+export async function requireUser(request: Request) {
+  const userId = await requireUserId(request);
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      username: true,
+      id: true,
+    },
+  });
+
+  if (!user) {
+    throw await logout({ request });
+  } else {
+    return user;
+  }
+}
