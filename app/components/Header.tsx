@@ -1,11 +1,19 @@
 import { Popover, PopoverPanel } from '@headlessui/react';
 import { Bars3Icon, Cog6ToothIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Logo from './Logo';
-import { LinkButton, LinkWithPrefetch, LogoutForm, MenuToggle, PreTextWithLink, ThemeSwitcher } from '../components';
+import {
+  LinkButton,
+  LinkWithPrefetch,
+  LogoutForm,
+  MenuToggle,
+  PreTextWithLink,
+  ProfileDropdown,
+  ThemeSwitcher,
+} from '../components';
 import { Link } from '@remix-run/react';
 import { useOptionalUser } from '~/hooks/useOptionalUser';
 
-const links = [
+export const userNavigation = [
   {
     name: 'Profile',
     description: 'Your profile information.',
@@ -24,8 +32,8 @@ export default function Header() {
   const isLoggedInUser = useOptionalUser();
   return (
     <Popover className="sticky top-0 z-50">
-      <div className="mx-auto px-6 bg-surface border-b border-around-surface">
-        <div className="flex items-center justify-between py-6 md:justify-start md:space-x-10">
+      <div className="mx-auto px-6 bg-surface dark:bg-zinc-900 border-b border-around-surface shadow-md">
+        <div className="flex items-center justify-between py-3 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Logo />
           </div>
@@ -39,12 +47,12 @@ export default function Header() {
           </div>
 
           <div className="hidden items-center justify-end md:flex md:flex-1 md:gap-x-5 lg:w-0">
-            <span className="mr-2">
-              <ThemeSwitcher />
-            </span>
+            <ThemeSwitcher />
 
             {isLoggedInUser ? (
-              <LogoutForm />
+              <>
+                <ProfileDropdown userNavigation={userNavigation} />
+              </>
             ) : (
               <>
                 <LinkWithPrefetch to="/login">
@@ -78,7 +86,7 @@ export default function Header() {
             {isLoggedInUser ? (
               <div className="mt-6">
                 <nav className="grid gap-y-8">
-                  {links.map(item => (
+                  {userNavigation.map(item => (
                     <a
                       key={item.name}
                       href={item.href}
@@ -88,13 +96,23 @@ export default function Header() {
                       <span className="ml-3 text-base font-medium text-on-surface">{item.name}</span>
                     </a>
                   ))}
+
+                  <LogoutForm />
                 </nav>
               </div>
             ) : null}
           </div>
           {isLoggedInUser ? (
-            <div className="p-3 -m-2">
-              <LogoutForm />
+            <div className="px-5 py-3">
+              <a href="#" className="flex items-center rounded-md text-on-surface hover:text-on-surface-variant">
+                <img
+                  alt=""
+                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                  className="mr-3 h-8 w-8 rounded-full"
+                />
+                <span className="sr-only">Your profile</span>
+                <span aria-hidden="true">Tom Cook</span>
+              </a>
             </div>
           ) : (
             <div className="space-y-6 px-5 py-6 min-h-96 flex flex-col justify-end">
