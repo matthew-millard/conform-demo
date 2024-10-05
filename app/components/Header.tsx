@@ -2,7 +2,6 @@ import { Popover, PopoverPanel } from '@headlessui/react';
 import { Bars3Icon, Cog6ToothIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Logo from './Logo';
 import { LinkButton, LinkWithPrefetch, LogoutForm, MenuToggle, PreTextWithLink, ThemeSwitcher } from '../components';
-import { Theme } from './ThemeSwitcher';
 import { Link } from '@remix-run/react';
 import { useOptionalUser } from '~/hooks/useOptionalUser';
 
@@ -76,20 +75,22 @@ export default function Header() {
                 </MenuToggle>
               </div>
             </div>
-            <div className="mt-6">
-              <nav className="grid gap-y-8">
-                {links.map(item => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="-m-3 flex items-center rounded-md p-3 hover:bg-on-surface-hover"
-                  >
-                    <item.icon aria-hidden="true" className="h-6 w-6 flex-shrink-0 text-primary" />
-                    <span className="ml-3 text-base font-medium text-on-surface">{item.name}</span>
-                  </a>
-                ))}
-              </nav>
-            </div>
+            {isLoggedInUser ? (
+              <div className="mt-6">
+                <nav className="grid gap-y-8">
+                  {links.map(item => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className="-m-3 flex items-center rounded-md p-3 hover:bg-on-surface-hover"
+                    >
+                      <item.icon aria-hidden="true" className="h-6 w-6 flex-shrink-0 text-primary" />
+                      <span className="ml-3 text-base font-medium text-on-surface">{item.name}</span>
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            ) : null}
           </div>
           {isLoggedInUser ? (
             <div className="p-3 -m-2">
