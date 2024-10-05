@@ -1,41 +1,45 @@
-import Logo from './Logo';
-import RememberMe from './RememberMe';
-import Label from './Label';
 import Checkbox from './Checkbox';
-import PreTextWithLink from './PreTextWithLink';
-import Hyperlink from './Hyperlink';
-import SubmitButton from './SubmitButton';
-import InputText from './InputText';
-import FormFieldErrors from './FormFieldErrors';
 import FormErrors from './FormErrors';
-import ThemeSwitcher from './ThemeSwitcher';
+import FormFieldErrors from './FormFieldErrors';
+import GenericErrorBoundary from './GenericErrorBoundary';
 import Header from './Header';
+import Hyperlink from './Hyperlink';
+import Icon from './Icon';
+import InputText from './InputText';
+import Label from './Label';
 import LinkButton from './LinkButton';
 import LinkWithPrefetch from './LinkWithPrefetch';
-import Icon from './Icon';
-import MenuToggle from './MenuToggle';
+import Logo from './Logo';
 import LogoutForm from './LogoutForm';
-import GenericErrorBoundary from './GenericErrorBoundary';
+import MenuToggle from './MenuToggle';
+import PlaceholderIcon from './PlaceholderIcon';
+import PreTextWithLink from './PreTextWithLink';
+import ProfileDropdown from './ProfileDropdown';
+import RememberMe from './RememberMe';
+import SubmitButton from './SubmitButton';
+import ThemeSwitcher from './ThemeSwitcher';
 import Toast from './Toast';
 
 export {
-  Logo,
-  RememberMe,
-  Label,
   Checkbox,
-  SubmitButton,
-  InputText,
-  FormFieldErrors,
   FormErrors,
-  ThemeSwitcher,
+  FormFieldErrors,
+  GenericErrorBoundary,
   Header,
+  Hyperlink,
+  Icon,
+  InputText,
+  Label,
   LinkButton,
   LinkWithPrefetch,
-  Icon,
-  MenuToggle,
-  PreTextWithLink,
-  Hyperlink,
+  Logo,
   LogoutForm,
-  GenericErrorBoundary,
+  MenuToggle,
+  PlaceholderIcon,
+  PreTextWithLink,
+  ProfileDropdown,
+  RememberMe,
+  SubmitButton,
+  ThemeSwitcher,
   Toast,
 };
