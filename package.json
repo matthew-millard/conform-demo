@@ -10,6 +10,9 @@
     "typecheck": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "prisma": {
+    "seed": "npx tsx prisma/seed.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/matthew-millard/conform-demo.git"
