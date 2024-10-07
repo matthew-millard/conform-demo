@@ -3,8 +3,26 @@ import { redirect } from '@remix-run/node';
 import { sessionStorage } from './session';
 
 export async function getUserData(userId: string) {
-  const user = await prisma.user.findUnique({
+  const user = await prisma.user.findUniqueOrThrow({
     where: { id: userId },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      username: true,
+      roles: {
+        select: {
+          name: true,
+          permissions: {
+            select: {
+              action: true,
+              entity: true,
+              access: true,
+            },
+          },
+        },
+      },
+    },
     // Include more fields here if needed
   });
 
