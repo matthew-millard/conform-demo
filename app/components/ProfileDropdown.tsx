@@ -3,10 +3,11 @@ import PlaceholderIcon from './PlaceholderIcon';
 import LogoutForm from './LogoutForm';
 
 type ProfileDropdownProps = {
-  userNavigation: { name: string; description: string; href: string; icon: any }[];
+  userNavigation: { name: string; description: string; path: string; icon: any }[];
+  username: string;
 };
 
-export default function ProfileDropdown({ userNavigation }: ProfileDropdownProps) {
+export default function ProfileDropdown({ userNavigation, username }: ProfileDropdownProps) {
   return (
     <Menu as="div" className="relative">
       <div>
@@ -29,7 +30,7 @@ export default function ProfileDropdown({ userNavigation }: ProfileDropdownProps
           return (
             <MenuItem key={item.name}>
               <a
-                href={item.href}
+                href={`/${username}${item.path}`}
                 className="py-2.5 px-4 text-on-surface data-[focus]:bg-on-surface-hover flex items-center rounded-md hover:bg-on-surface-hover"
               >
                 <item.icon aria-hidden="true" className="h-6 w-6 flex-shrink-0 text-primary" />
