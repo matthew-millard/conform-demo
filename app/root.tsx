@@ -16,6 +16,7 @@ import { combineHeaders } from './utils/misc';
 import { toast as showToast, Toaster } from 'sonner';
 import { useEffect } from 'react';
 import { ToastProps } from './components/Toast';
+import { requireUserWithRole } from './utils/permissions';
 
 export const updateThemeActionIntent = 'update-theme';
 

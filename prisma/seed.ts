@@ -2,7 +2,7 @@ import { prisma } from '~/.server/db';
 import bcrypt from 'bcryptjs';
 
 async function seed() {
-  console.log('🌱 Seeding database...');
+  console.log('Seeding database...');
   console.time('Seeded database...');
 
   console.time('Cleaning database...');
@@ -56,7 +56,7 @@ async function seed() {
   console.timeEnd('Created roles...');
 
   const totalUsers = 3;
-  console.time(`🧍🏼🧍🏾‍♀️🧍🏾 Seeding ${totalUsers} users...`);
+  console.time(`Seeding ${totalUsers} users...`);
   const userData = [
     {
       firstName: 'Hamish',
@@ -107,9 +107,9 @@ async function seed() {
       });
   }
 
-  console.timeEnd(`🧍🏼🧍🏾‍♀️🧍🏾 Seeding ${totalUsers} users...`);
+  console.timeEnd(`Seeding ${totalUsers} users...`);
 
-  console.time(`👨🏼‍💼 Created admin user Matt`);
+  console.time(`Created admin user Matt`);
   await prisma.user
     .create({
       data: {
@@ -123,9 +123,12 @@ async function seed() {
           },
         },
         roles: {
-          connect: {
-            name: 'admin',
-          },
+          connect: [
+            {
+              name: 'admin',
+            },
+            { name: 'user' },
+          ],
         },
       },
     })
@@ -133,10 +136,10 @@ async function seed() {
       console.error('Error creating a admin: ', error);
       return null;
     });
-  console.timeEnd(`👨🏼‍💼 Created admin user Matt`);
+  console.timeEnd(`Created admin user Matt`);
 
   console.timeEnd('Seeded database...');
-  console.log('🌱 Database seeded!');
+  console.log('Database seeded!');
 }
 
 seed()
