@@ -17,19 +17,20 @@ export const userNavigation = [
   {
     name: 'Profile',
     description: 'Your profile information.',
-    href: '/profile',
+    path: '',
     icon: UserCircleIcon,
   },
   {
     name: 'Account settings',
     description: 'Your account settings.',
-    href: 'settings',
+    path: '/settings',
     icon: Cog6ToothIcon,
   },
 ];
 
 export default function Header() {
   const isLoggedInUser = useOptionalUser();
+
   return (
     <Popover className="sticky top-0 z-50">
       <div className="mx-auto px-6 bg-surface dark:bg-zinc-900 border-b border-around-surface shadow-md">
@@ -51,7 +52,7 @@ export default function Header() {
 
             {isLoggedInUser ? (
               <>
-                <ProfileDropdown userNavigation={userNavigation} />
+                <ProfileDropdown userNavigation={userNavigation} username={isLoggedInUser.username} />
               </>
             ) : (
               <>
@@ -89,7 +90,7 @@ export default function Header() {
                   {userNavigation.map(item => (
                     <a
                       key={item.name}
-                      href={item.href}
+                      href={`/${isLoggedInUser.username}${item.path}`}
                       className="-m-3 flex items-center rounded-md p-3 hover:bg-on-surface-hover"
                     >
                       <item.icon aria-hidden="true" className="h-6 w-6 flex-shrink-0 text-primary" />
@@ -104,14 +105,17 @@ export default function Header() {
           </div>
           {isLoggedInUser ? (
             <div className="px-5 py-3">
-              <a href="#" className="flex items-center rounded-md text-on-surface hover:text-on-surface-variant">
+              <a
+                href={`/${isLoggedInUser.username}`}
+                className="flex items-center rounded-md text-on-surface hover:text-on-surface-variant"
+              >
                 <img
                   alt=""
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   className="mr-3 h-8 w-8 rounded-full"
                 />
                 <span className="sr-only">Your profile</span>
-                <span aria-hidden="true">Tom Cook</span>
+                <span aria-hidden="true">{`${isLoggedInUser.firstName} ${isLoggedInUser.lastName}`}</span>
               </a>
             </div>
           ) : (
