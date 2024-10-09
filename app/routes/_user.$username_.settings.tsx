@@ -4,7 +4,7 @@ import { KeyIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { z } from 'zod';
-import { usernameUpdateAction } from '~/.server/actions';
+import { passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
 import { FormErrors, FormFieldErrors, InputText, Label, OutlineButton } from '~/components';
 import { useIsPending } from '~/hooks';
@@ -29,8 +29,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
       return usernameUpdateAction({ userId, formData, request });
     }
     case updatePasswordActionIntent: {
-      console.log('Updating password');
-      return {};
+      return passwordUpdateAction({ userId, formData, request });
     }
     default: {
       throw new Response(`Invalid intent: ${intent}`, { status: 400, statusText: 'Bad Request' });
