@@ -6,6 +6,7 @@ import { redirect } from '@remix-run/react';
 import { safeRedirect } from 'remix-utils/safe-redirect';
 import { combineResponseInits } from '~/utils/misc';
 import { sessionKey } from './config';
+import { type Password, type User } from '@prisma/client';
 
 // Cookie Expiration Time
 const SESSION_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30; // 30 days
@@ -20,9 +21,9 @@ export async function getPasswordHash(password: string) {
   return hash;
 }
 
-export async function verifyUserPassword(email: string, password: string) {
+export async function verifyUserPassword(where: Pick<User, 'email'> | Pick<User, 'id'>, password: Password['hash']) {
   const userWithPassword = await prisma.user.findUnique({
-    where: { email },
+    where,
     select: { id: true, password: { select: { hash: true } } },
   });
 
@@ -62,8 +63,8 @@ export async function signup({ firstName, lastName, username, email, password }:
   return user;
 }
 
-export async function login({ email, password }: { email: string; password: string }) {
-  const user = await verifyUserPassword(email, password);
+export async function login({ email, password }: { email: User['email']; password: string }) {
+  const user = await verifyUserPassword({ email }, password);
 
   if (!user) return null;
 
