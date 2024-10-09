@@ -64,3 +64,18 @@ export const LoginSchema = z.object({
   rememberMe: z.literal('on').optional(),
   redirectTo: RedirectToSchema,
 });
+
+export const UpdatePasswordSchema = z
+  .object({
+    currentPassword: z.string(),
+    newPassword: PasswordSchema,
+    confirmPassword: z.string(),
+  })
+  .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'], // This will attach the error to the passwordConfirm field
+  });
+
+export const UpdateUsernameSchema = z.object({
+  username: UsernameSchema,
+});

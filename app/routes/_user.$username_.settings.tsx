@@ -8,7 +8,7 @@ import { usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
 import { FormErrors, FormFieldErrors, InputText, Label, OutlineButton } from '~/components';
 import { useIsPending } from '~/hooks';
-import { PasswordSchema, UsernameSchema } from '~/schemas';
+import { UpdatePasswordSchema, UpdateUsernameSchema, UsernameSchema } from '~/schemas';
 import { invariantResponse } from '~/utils/misc';
 
 const updateUsernameActionIntent = 'update-username';
@@ -58,7 +58,7 @@ export default function UserAccountSettingsRoute() {
   const [usernameForm, usernameFields] = useForm({
     id: 'update-username-form',
     lastResult,
-    constraint: getZodConstraint(z.object({ username: z.string().min(3).max(20) })),
+    constraint: getZodConstraint(UpdateUsernameSchema),
     shouldValidate: 'onSubmit',
     shouldRevalidate: 'onInput',
     defaultValue: {
@@ -66,7 +66,7 @@ export default function UserAccountSettingsRoute() {
     },
     onValidate({ formData }) {
       return parseWithZod(formData, {
-        schema: z.object({ username: UsernameSchema }),
+        schema: UpdateUsernameSchema,
       });
     },
   });
@@ -75,32 +75,12 @@ export default function UserAccountSettingsRoute() {
   const [passwordForm, passwordFields] = useForm({
     id: 'update-password-form',
     lastResult,
-    constraint: getZodConstraint(
-      z
-        .object({
-          currentPassword: z.string(),
-          newPassword: PasswordSchema,
-          confirmPassword: z.string(),
-        })
-        .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
-          message: "Passwords don't match",
-          path: ['confirmPassword'], // This will attach the error to the passwordConfirm field
-        })
-    ),
+    constraint: getZodConstraint(UpdatePasswordSchema),
     shouldValidate: 'onSubmit',
     shouldRevalidate: 'onInput',
     onValidate({ formData }) {
       return parseWithZod(formData, {
-        schema: z
-          .object({
-            currentPassword: z.string(),
-            newPassword: PasswordSchema,
-            confirmPassword: z.string(),
-          })
-          .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
-            message: "Passwords don't match",
-            path: ['confirmPassword'], // This will attach the error to the passwordConfirm field
-          }),
+        schema: UpdatePasswordSchema,
       });
     },
   });
