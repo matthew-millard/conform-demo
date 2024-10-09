@@ -6,6 +6,8 @@ import {
   PasswordSchema,
   SignupSchema,
   LoginSchema,
+  UpdatePasswordSchema,
+  UpdateUsernameSchema,
 } from './auth';
 import { ThemeSwitcherSchema } from './theme';
 
@@ -18,4 +20,6 @@ export {
   SignupSchema,
   LoginSchema,
   ThemeSwitcherSchema,
+  UpdatePasswordSchema,
+  UpdateUsernameSchema,
 };
