@@ -23,6 +23,7 @@ export default {
         'on-error': 'var(--on-error)',
 
         'around-surface': 'var(--around-surface)',
+        'across-surface': 'var(--across-surface)',
 
         'dodger-blue-50': 'var(--dodger-blue-50)',
         'dodger-blue-100': 'var(--dodger-blue-100)',
