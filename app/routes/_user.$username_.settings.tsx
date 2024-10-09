@@ -2,23 +2,36 @@ import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { UserCircleIcon } from '@heroicons/react/24/outline';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { Form, useActionData, useLoaderData } from '@remix-run/react';
+import { Form, useActionData, useFetchers, useLoaderData } from '@remix-run/react';
+import { s } from 'node_modules/vite/dist/node/types.d-aGj9QkWt';
 import { z } from 'zod';
+import { usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
-import { FormFieldErrors, InputText, Label, OutlineButton } from '~/components';
+import { FormErrors, FormFieldErrors, InputText, Label, OutlineButton } from '~/components';
+import { useIsPending } from '~/hooks';
 import { UsernameSchema } from '~/schemas';
 import { invariantResponse } from '~/utils/misc';
 
 const updateUsernameActionIntent = 'update-username';
 
-export async function action({ request }: ActionFunctionArgs) {
+export async function action({ request, params }: ActionFunctionArgs) {
   const { id, username } = await requireUser(request);
-  console.log(`User ID: ${id}, Username: ${username}`);
+  const userId = id;
+  invariantResponse(username === params.username, 'Not authorized', {
+    status: 403,
+    statusText: 'Unauthorized',
+  });
   const formData = await request.formData();
   const intent = formData.get('intent');
-  console.log('formData: ', formData);
-  console.log('intent: ', intent);
-  return {};
+
+  switch (intent) {
+    case updateUsernameActionIntent: {
+      return usernameUpdateAction({ userId, formData, request });
+    }
+    default: {
+      throw new Response(`Invalid intent: ${intent}`, { status: 400, statusText: 'Bad Request' });
+    }
+  }
 }
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
@@ -34,6 +47,9 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function UserAccountSettingsRoute() {
   const { username } = useLoaderData<typeof loader>();
   const lastResult = useActionData<typeof action>();
+
+  const isPending = useIsPending({ formIntent: updateUsernameActionIntent });
+
   // Update username form
   const [updateUsernameForm, updateUsernameFields] = useForm({
     id: 'update-username-form',
@@ -65,14 +81,14 @@ export default function UserAccountSettingsRoute() {
         <section className="px-4 sm:px-6 lg:px-8">
           <div>
             <div className="flex items-center">
-              <UserCircleIcon className="w-8 h-8 flex-none text-primary" />
+              <UserCircleIcon className="w-8 h-8 flex-none text-primary stroke-1" />
               <h2 className="ml-4 text-lg font-semibold leading-7 text-on-surface">Username</h2>
             </div>
             <p className="mt-3 max-w-none text-sm leading-6 text-on-surface-variant">
               Update your username associated with you account.
             </p>
           </div>
-          <Form method="POST" className="mt-8" {...getFormProps(updateUsernameForm)}>
+          <Form method="POST" className="mt-8" {...getFormProps(updateUsernameForm)} preventScrollReset>
             <div className="flex flex-col gap-y-2">
               <Label htmlFor={updateUsernameFields.username.id} text="Username" />
               <InputText
@@ -83,7 +99,18 @@ export default function UserAccountSettingsRoute() {
               <FormFieldErrors field={updateUsernameFields.username} />
             </div>
             <div className="mt-6">
-              <OutlineButton type="submit" text="Update" name="intent" value={updateUsernameActionIntent} />
+              <OutlineButton
+                type="submit"
+                text="Update"
+                name="intent"
+                value={updateUsernameActionIntent}
+                disabled={isPending}
+                isPending={isPending}
+                pendingText="Updating..."
+              />
+            </div>
+            <div className="mt-3">
+              <FormErrors form={updateUsernameForm} />
             </div>
           </Form>
         </section>
