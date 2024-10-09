@@ -19,6 +19,7 @@ import RememberMe from './RememberMe';
 import SubmitButton from './SubmitButton';
 import ThemeSwitcher from './ThemeSwitcher';
 import Toast from './Toast';
+import OutlineButton from './OutlineButton';
 
 export {
   Checkbox,
@@ -42,4 +43,5 @@ export {
   SubmitButton,
   ThemeSwitcher,
   Toast,
+  OutlineButton,
 };
