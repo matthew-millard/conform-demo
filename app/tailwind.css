@@ -75,6 +75,7 @@
     --on-surface-hover: var(--zinc-100);
 
     --around-surface: var(--zinc-300);
+    --across-surface: var(--zinc-200);
   }
 
   .dark {
@@ -85,5 +86,6 @@
 
     --on-surface-hover: var(--zinc-900);
     --around-surface: var(--zinc-700);
+    --across-surface: var(--zinc-800);
   }
 }
