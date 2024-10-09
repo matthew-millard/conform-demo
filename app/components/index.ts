@@ -20,6 +20,7 @@ import SubmitButton from './SubmitButton';
 import ThemeSwitcher from './ThemeSwitcher';
 import Toast from './Toast';
 import OutlineButton from './OutlineButton';
+import PendingIndicator from './PendingIndicator';
 
 export {
   Checkbox,
@@ -44,4 +45,5 @@ export {
   ThemeSwitcher,
   Toast,
   OutlineButton,
+  PendingIndicator,
 };
