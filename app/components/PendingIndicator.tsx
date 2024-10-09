@@ -1,8 +1,11 @@
-export default function PendingIndicator({ pendingText }: { pendingText: string }) {
+import classNames from '~/utils/classNames';
+
+export default function PendingIndicator({ pendingText, color }: { pendingText: string; color?: string }) {
+  const classNamesCombined = classNames('-ml-1 mr-3 h-5 w-5 animate-spin', color ?? 'text-dodger-blue-200');
   return (
     <span className="flex items-center">
       <svg
-        className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
+        className={classNamesCombined}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
