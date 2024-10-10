@@ -112,7 +112,7 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
   submission.payload = {};
 
   if (submission.status !== 'success') {
-    return json(submission.reply({ hideFields: ['currentPassword', 'newPassword', 'confirmPassword'] }), {
+    return json(submission.reply(), {
       status: submission.status === 'error' ? 400 : 200,
     });
   }
@@ -147,10 +147,9 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
     title: 'Password updated',
   });
 
-  const username = result.username;
-
-  return redirect(`/${username}/settings`, {
-    headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
+  return json(submission.reply(), {
+    headers: {
+      'set-cookie': await toastSessionStorage.commitSession(toastCookieSession),
+    },
   });
-  return {};
 }

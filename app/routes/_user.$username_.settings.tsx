@@ -3,11 +3,10 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { KeyIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
 import { Form, useActionData, useLoaderData } from '@remix-run/react';
-import { z } from 'zod';
 import { passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
 import { FormErrors, FormFieldErrors, InputText, Label, OutlineButton } from '~/components';
-import { useIsPending } from '~/hooks';
+import { useFormReset, useIsPending } from '~/hooks';
 import { UpdatePasswordSchema, UpdateUsernameSchema, UsernameSchema } from '~/schemas';
 import { invariantResponse } from '~/utils/misc';
 
@@ -51,7 +50,7 @@ export default function UserAccountSettingsRoute() {
   const { username } = useLoaderData<typeof loader>();
   const lastResult = useActionData<typeof action>();
 
-  const isPending = useIsPending({ formIntent: updateUsernameActionIntent });
+  const updatePasswordFormRef = useFormReset({ formIntent: updatePasswordActionIntent });
 
   // Update username form
   const [usernameForm, usernameFields] = useForm({
@@ -122,8 +121,7 @@ export default function UserAccountSettingsRoute() {
                 text="Update"
                 name="intent"
                 value={updateUsernameActionIntent}
-                disabled={isPending}
-                isPending={isPending}
+                isPending={useIsPending({ formIntent: updateUsernameActionIntent })}
                 pendingText="Updating..."
               />
             </div>
@@ -144,7 +142,13 @@ export default function UserAccountSettingsRoute() {
               Update your password associated with you account.
             </p>
           </div>
-          <Form method="POST" className="mt-8" {...getFormProps(passwordForm)} preventScrollReset>
+          <Form
+            method="POST"
+            className="mt-8"
+            {...getFormProps(passwordForm)}
+            preventScrollReset
+            ref={updatePasswordFormRef}
+          >
             <div className="flex flex-col gap-y-2 mt-3 sm:mt-6">
               <Label htmlFor={passwordFields.currentPassword.id} text="Current password" />
               <InputText
@@ -180,13 +184,9 @@ export default function UserAccountSettingsRoute() {
                 text="Update"
                 name="intent"
                 value={updatePasswordActionIntent}
-                disabled={isPending}
-                isPending={isPending}
+                isPending={useIsPending({ formIntent: updatePasswordActionIntent })}
                 pendingText="Updating..."
               />
-            </div>
-            <div className="mt-3">
-              <FormErrors form={passwordForm} />
             </div>
           </Form>
         </section>
