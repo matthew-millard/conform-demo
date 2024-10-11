@@ -17,6 +17,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const cookieSession = await sessionStorage.getSession();
 
   const toastCookieSession = await setToastCookie(request, {
+    id: crypto.randomUUID(),
     type: 'success',
     description: 'You have been logged out successfully.',
     title: 'Logged out',

@@ -74,6 +74,7 @@ export async function usernameUpdateAction({ userId, formData, request }: Action
   }
 
   const toastCookieSession = await setToastCookie(request, {
+    id: crypto.randomUUID(),
     type: 'success',
     description: `Your username has been updated to ${username}.`,
     title: 'Username updated',
@@ -140,6 +141,7 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
   const { username } = result;
 
   const toastCookieSession = await setToastCookie(request, {
+    id: crypto.randomUUID(),
     type: 'success',
     description: `Your password has been updated successfully.`,
     title: 'Password updated',

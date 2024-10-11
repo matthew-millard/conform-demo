@@ -12,12 +12,14 @@ export default function UpdatePasswordForm() {
   const lastResultPassword = lastResult?.initialValue?.intent === updatePasswordActionIntent ? lastResult : null;
 
   const formRef = useRef<HTMLFormElement>(null);
+  const currentPasswordRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (lastResultPassword?.status === 'success') {
       formRef.current?.reset();
+      currentPasswordRef.current?.focus();
     }
-  }, [lastResultPassword?.status]);
+  }, [lastResultPassword]);
 
   const [form, fields] = useForm({
     id: 'update-password-form',
@@ -35,6 +37,7 @@ export default function UpdatePasswordForm() {
       <div className="flex flex-col gap-y-2 mt-3 sm:mt-6">
         <Label htmlFor={fields.currentPassword.id} text="Current password" />
         <InputText
+          ref={currentPasswordRef}
           fieldAttributes={{
             ...getInputProps(fields.currentPassword, { type: 'password' }),
           }}
