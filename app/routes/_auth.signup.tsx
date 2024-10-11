@@ -5,7 +5,7 @@ import { checkCSRF } from '~/.server/csrf';
 import { checkHoneypot } from '~/.server/honeypot';
 import { parseWithZodAndCheckUniqueness } from '~/.server/validation';
 import { Hyperlink, PreTextWithLink } from '~/components';
-import { SignupForm } from '~/ui';
+import { SignupForm } from '~/forms';
 
 export async function action({ request }: ActionFunctionArgs) {
   await requireAnonymous(request);
