@@ -118,7 +118,7 @@ export default function SignupForm() {
           pendingText="Signing up..."
         />
       </div>
-      <FormErrors form={form} />
+      <FormErrors errorId={form.errorId} errors={form.errors} />
     </Form>
   );
 }

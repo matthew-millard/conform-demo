@@ -67,7 +67,7 @@ export default function LoginForm() {
         isPending={isPending}
         pendingText="Logging in..."
       />
-      <FormErrors form={form} />
+      <FormErrors errorId={form.errorId} errors={form.errors} />
     </Form>
   );
 }
