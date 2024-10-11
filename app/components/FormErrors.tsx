@@ -1,18 +1,15 @@
-type FormErrorsProps = {
-  form: {
-    errors?: string[];
-    errorId: string;
-  };
-};
+import { FormMetadata } from '@conform-to/react';
 
-export default function FormErrors({ form }: FormErrorsProps) {
-  return (
-    <ul id={form.errorId}>
-      {form?.errors?.map((error, index) => (
-        <li className="text-red-600 text-xs" key={`${error}-${index}`}>
+type FormErrorsProps = Pick<FormMetadata, 'errorId' | 'errors'>;
+
+export default function FormErrors({ errorId, errors }: FormErrorsProps) {
+  return errors?.length ? (
+    <ul id={errorId}>
+      {errors.map(error => (
+        <li key={error} className="text-red-600 text-xs">
           {error}
         </li>
       ))}
     </ul>
-  );
+  ) : null;
 }

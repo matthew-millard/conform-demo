@@ -1,17 +1,12 @@
-import { getFormProps, getInputProps, useForm } from '@conform-to/react';
-import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { KeyIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { Form, useActionData, useLoaderData } from '@remix-run/react';
 import { passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
-import { FormErrors, FormFieldErrors, InputText, Label, OutlineButton } from '~/components';
-import { useFormReset, useIsPending } from '~/hooks';
-import { UpdatePasswordSchema, UpdateUsernameSchema, UsernameSchema } from '~/schemas';
+import { UpdatePasswordForm, UpdateUsernameForm } from '~/forms';
 import { invariantResponse } from '~/utils/misc';
 
-const updateUsernameActionIntent = 'update-username';
-const updatePasswordActionIntent = 'update-password';
+export const updateUsernameActionIntent = 'update-username';
+export const updatePasswordActionIntent = 'update-password';
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const { id, username } = await requireUser(request);
@@ -47,41 +42,6 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 }
 
 export default function UserAccountSettingsRoute() {
-  const { username } = useLoaderData<typeof loader>();
-  const lastResult = useActionData<typeof action>();
-
-  const updatePasswordFormRef = useFormReset({ formIntent: updatePasswordActionIntent });
-
-  // Update username form
-  const [usernameForm, usernameFields] = useForm({
-    id: 'update-username-form',
-    lastResult,
-    constraint: getZodConstraint(UpdateUsernameSchema),
-    shouldValidate: 'onSubmit',
-    shouldRevalidate: 'onInput',
-    defaultValue: {
-      username,
-    },
-    onValidate({ formData }) {
-      return parseWithZod(formData, {
-        schema: UpdateUsernameSchema,
-      });
-    },
-  });
-
-  // Update password form
-  const [passwordForm, passwordFields] = useForm({
-    id: 'update-password-form',
-    lastResult,
-    constraint: getZodConstraint(UpdatePasswordSchema),
-    shouldValidate: 'onSubmit',
-    shouldRevalidate: 'onInput',
-    onValidate({ formData }) {
-      return parseWithZod(formData, {
-        schema: UpdatePasswordSchema,
-      });
-    },
-  });
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -105,30 +65,7 @@ export default function UserAccountSettingsRoute() {
               Update your username associated with you account.
             </p>
           </div>
-          <Form method="POST" className="mt-8" {...getFormProps(usernameForm)} preventScrollReset>
-            <div className="flex flex-col gap-y-2">
-              <Label htmlFor={usernameFields.username.id} text="Username" />
-              <InputText
-                fieldAttributes={{
-                  ...getInputProps(usernameFields.username, { type: 'text' }),
-                }}
-              />
-              <FormFieldErrors field={usernameFields.username} />
-            </div>
-            <div className="mt-6">
-              <OutlineButton
-                type="submit"
-                text="Update"
-                name="intent"
-                value={updateUsernameActionIntent}
-                isPending={useIsPending({ formIntent: updateUsernameActionIntent })}
-                pendingText="Updating..."
-              />
-            </div>
-            <div className="mt-3">
-              <FormErrors form={usernameForm} />
-            </div>
-          </Form>
+          <UpdateUsernameForm />
         </section>
 
         {/* Update Password */}
@@ -142,53 +79,7 @@ export default function UserAccountSettingsRoute() {
               Update your password associated with you account.
             </p>
           </div>
-          <Form
-            method="POST"
-            className="mt-8"
-            {...getFormProps(passwordForm)}
-            preventScrollReset
-            ref={updatePasswordFormRef}
-          >
-            <div className="flex flex-col gap-y-2 mt-3 sm:mt-6">
-              <Label htmlFor={passwordFields.currentPassword.id} text="Current password" />
-              <InputText
-                fieldAttributes={{
-                  ...getInputProps(passwordFields.currentPassword, { type: 'password' }),
-                }}
-              />
-              <FormFieldErrors field={passwordFields.currentPassword} />
-            </div>
-
-            <div className="flex flex-col gap-y-2 mt-3 sm:mt-6">
-              <Label htmlFor={passwordFields.newPassword.id} text="New password" />
-              <InputText
-                fieldAttributes={{
-                  ...getInputProps(passwordFields.newPassword, { type: 'password' }),
-                }}
-              />
-              <FormFieldErrors field={passwordFields.newPassword} />
-            </div>
-
-            <div className="flex flex-col gap-y-2 mt-3 sm:mt-6">
-              <Label htmlFor={passwordFields.confirmPassword.id} text="Confirm password" />
-              <InputText
-                fieldAttributes={{
-                  ...getInputProps(passwordFields.confirmPassword, { type: 'password' }),
-                }}
-              />
-              <FormFieldErrors field={passwordFields.confirmPassword} />
-            </div>
-            <div className="mt-6">
-              <OutlineButton
-                type="submit"
-                text="Update"
-                name="intent"
-                value={updatePasswordActionIntent}
-                isPending={useIsPending({ formIntent: updatePasswordActionIntent })}
-                pendingText="Updating..."
-              />
-            </div>
-          </Form>
+          <UpdatePasswordForm />
         </section>
       </div>
     </>

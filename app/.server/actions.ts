@@ -98,9 +98,7 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
             path: ['currentPassword'],
             code: z.ZodIssueCode.custom,
             message: 'Incorrect password',
-            fatal: true,
           });
-          return z.NEVER;
         }
       }
 
@@ -108,11 +106,8 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
     }),
   });
 
-  // clear the payload so we don't send the password back to the client
-  submission.payload = {};
-
   if (submission.status !== 'success') {
-    return json(submission.reply(), {
+    return json(submission.reply({ hideFields: ['currentPassword', 'newPassword', 'confirmPassword'] }), {
       status: submission.status === 'error' ? 400 : 200,
     });
   }
@@ -136,10 +131,13 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
     return json(
       submission.reply({
         formErrors: ['Something went wrong. Please try again. Error code: 500 - Internal Server Error'],
+        hideFields: ['currentPassword', 'newPassword', 'confirmPassword'],
       }),
       { status: 500, statusText: 'Internal Server Error' }
     );
   }
+
+  const { username } = result;
 
   const toastCookieSession = await setToastCookie(request, {
     type: 'success',
@@ -147,9 +145,11 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
     title: 'Password updated',
   });
 
-  return json(submission.reply(), {
-    headers: {
-      'set-cookie': await toastSessionStorage.commitSession(toastCookieSession),
-    },
+  // return redirect(`/${username}/settings`, {
+  //   headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
+  // });
+
+  return json(submission.reply({ hideFields: ['currentPassword', 'newPassword', 'confirmPassword'] }), {
+    headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
   });
 }
