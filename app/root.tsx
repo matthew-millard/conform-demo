@@ -125,16 +125,14 @@ export function ErrorBoundary() {
   );
 }
 
-type ShowToastArgs = Omit<ToastProps, 'id'>;
-
-function ShowToast({ toast }: { toast: ShowToastArgs }) {
-  const { type, title, description } = toast;
+function ShowToast({ toast }: { toast: ToastProps }) {
+  const { type, title, description, id } = toast;
 
   useEffect(() => {
     setTimeout(() => {
-      showToast.custom(t => <Toast id={t} type={type} title={title} description={description} />);
+      showToast.custom(t => <Toast id={id} type={type} title={title} description={description} />);
     }, 0);
-  }, [type, title, description]);
+  }, [type, title, description, id]);
   return null;
 }
 

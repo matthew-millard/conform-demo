@@ -24,6 +24,7 @@ export const toastSessionStorage = createCookieSessionStorage({
 export async function setToastCookie(
   request: Request,
   value: {
+    id: string;
     type: 'success' | 'info' | 'warning' | 'error';
     title: string;
     description: string;
