@@ -5,6 +5,8 @@ import { prisma } from './db';
 import { json, redirect } from '@remix-run/node';
 import { setToastCookie, toastSessionStorage } from './toast';
 import { getPasswordHash, verifyUserPassword } from './auth';
+import { LogOutOfOtherSessionsSchema } from '~/schemas/auth';
+import { getSession } from './session';
 
 type ActionArgs = {
   userId: string;
@@ -138,8 +140,6 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
     );
   }
 
-  const { username } = result;
-
   const toastCookieSession = await setToastCookie(request, {
     id: crypto.randomUUID(),
     type: 'success',
@@ -147,11 +147,71 @@ export async function passwordUpdateAction({ userId, formData, request }: Action
     title: 'Password updated',
   });
 
-  // return redirect(`/${username}/settings`, {
-  //   headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
-  // });
-
   return json(submission.reply({ hideFields: ['currentPassword', 'newPassword', 'confirmPassword'] }), {
+    headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
+  });
+}
+
+// Log out of other sessions
+export async function logOutOtherSessionsAction({ userId, formData, request }: ActionArgs) {
+  const submission = await parseWithZod(formData, {
+    async: true,
+    schema: LogOutOfOtherSessionsSchema.transform(async ({ password }, ctx) => {
+      // Verify the user's password
+      const user = await verifyUserPassword({ id: userId }, password);
+
+      if (!user) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Incorrect password',
+          path: ['password'],
+          fatal: true,
+        });
+        return z.NEVER;
+      }
+      return { password };
+    }),
+  });
+
+  if (submission.status !== 'success') {
+    return json(submission.reply({ hideFields: ['password'] }), {
+      status: submission.status === 'error' ? 400 : 200,
+    });
+  }
+
+  const cookieSession = await getSession(request);
+  const sessionId = cookieSession.get('sessionId');
+
+  const result = await prisma.session.deleteMany({
+    where: {
+      userId: userId,
+      id: {
+        not: sessionId,
+      },
+    },
+  });
+
+  if (!result) {
+    return json(
+      submission.reply({
+        formErrors: ['Something went wrong. Please try again. Error code: 500 - Internal Server Error'],
+        hideFields: ['password'],
+      }),
+      {
+        status: 500,
+        statusText: 'Internal Server Error',
+      }
+    );
+  }
+
+  const toastCookieSession = await setToastCookie(request, {
+    id: crypto.randomUUID(),
+    type: 'success',
+    description: `You have been logged out of other sessions.`,
+    title: 'Logged out of other sessions',
+  });
+
+  return json(submission.reply({ hideFields: ['password'] }), {
     headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
   });
 }

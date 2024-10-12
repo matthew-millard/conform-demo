@@ -1,12 +1,15 @@
-import { KeyIcon, UserCircleIcon } from '@heroicons/react/24/outline';
-import { ActionFunctionArgs, LoaderFunctionArgs } from '@remix-run/node';
-import { passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
+import { ArrowRightEndOnRectangleIcon, KeyIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { logOutOtherSessionsAction, passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
-import { UpdatePasswordForm, UpdateUsernameForm } from '~/forms';
+import { prisma } from '~/.server/db';
+import { LogOutOfOtherSessionsForm, UpdatePasswordForm, UpdateUsernameForm } from '~/forms';
 import { invariantResponse } from '~/utils/misc';
 
 export const updateUsernameActionIntent = 'update-username';
 export const updatePasswordActionIntent = 'update-password';
+export const logOutOfOtherSessionsActionIntent = 'log-out-of-other-sessions';
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const { id, username } = await requireUser(request);
@@ -25,6 +28,9 @@ export async function action({ request, params }: ActionFunctionArgs) {
     case updatePasswordActionIntent: {
       return passwordUpdateAction({ userId, formData, request });
     }
+    case logOutOfOtherSessionsActionIntent: {
+      return logOutOtherSessionsAction({ userId, formData, request });
+    }
     default: {
       throw new Response(`Invalid intent: ${intent}`, { status: 400, statusText: 'Bad Request' });
     }
@@ -38,10 +44,31 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
     statusText: 'Page not found.',
   });
 
-  return { id, username };
+  // Get user's data and return it
+  const user = await prisma.user.findUniqueOrThrow({
+    where: { id },
+    select: {
+      firstName: true,
+      lastName: true,
+      sessions: true,
+      email: true,
+    },
+  });
+
+  const data = {
+    id,
+    username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    sessionCount: user.sessions.length - 1,
+  };
+
+  return json(data);
 }
 
 export default function UserAccountSettingsRoute() {
+  const { sessionCount } = useLoaderData<typeof loader>();
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -80,6 +107,22 @@ export default function UserAccountSettingsRoute() {
             </p>
           </div>
           <UpdatePasswordForm />
+        </section>
+
+        {/* Log out of other sessions */}
+        <section className="px-4 sm:px-6 lg:px-8 pt-16">
+          <div>
+            <div className="flex items-center">
+              <ArrowRightEndOnRectangleIcon className="w-8 h-8 flex-none text-primary stroke-1" />
+              <h2 className="ml-4 text-lg font-semibold leading-7 text-on-surface">Log out other sessions</h2>
+            </div>
+            <p className="mt-3 max-w-none text-sm leading-6 text-on-surface-variant">
+              {sessionCount
+                ? `You are currently logged in on ${sessionCount} other ${sessionCount === 1 ? 'session' : 'sessions'} across all of your devices`
+                : 'You are not logged in on any other sessions across all of your devices.'}
+            </p>
+          </div>
+          <LogOutOfOtherSessionsForm />
         </section>
       </div>
     </>
