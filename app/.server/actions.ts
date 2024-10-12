@@ -7,6 +7,7 @@ import { setToastCookie, toastSessionStorage } from './toast';
 import { getPasswordHash, verifyUserPassword } from './auth';
 import { LogOutOfOtherSessionsSchema } from '~/schemas/auth';
 import { getSession } from './session';
+import { sessionKey } from './config';
 
 type ActionArgs = {
   userId: string;
@@ -180,11 +181,11 @@ export async function logOutOtherSessionsAction({ userId, formData, request }: A
   }
 
   const cookieSession = await getSession(request);
-  const sessionId = cookieSession.get('sessionId');
+  const sessionId = cookieSession.get(sessionKey);
 
   const result = await prisma.session.deleteMany({
     where: {
-      userId: userId,
+      userId,
       id: {
         not: sessionId,
       },

@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import { prisma } from './db';
 import type { SignupSubmissionValues } from './validation';
-import { getSession } from './session';
+import { getSession, sessionStorage } from './session';
 import { redirect } from '@remix-run/react';
 import { safeRedirect } from 'remix-utils/safe-redirect';
 import { combineResponseInits } from '~/utils/misc';
