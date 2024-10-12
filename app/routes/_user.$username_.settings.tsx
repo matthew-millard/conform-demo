@@ -45,30 +45,32 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
   });
 
   // Get user's data and return it
-  const user = await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUnique({
     where: { id },
     select: {
+      id: true,
+      username: true,
       firstName: true,
       lastName: true,
-      sessions: true,
+      _count: {
+        select: {
+          sessions: {
+            where: { expirationDate: { gt: new Date() } },
+          },
+        },
+      },
       email: true,
     },
   });
 
-  const data = {
-    id,
-    username,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    sessionCount: user.sessions.length - 1,
-  };
-
-  return json(data);
+  return json({ user });
 }
 
 export default function UserAccountSettingsRoute() {
-  const { sessionCount } = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
+
+  const otherSessionCount = (data.user?._count?.sessions || 0) - 1;
+
   return (
     <>
       <div className="px-4 sm:px-6 lg:px-8">
@@ -117,8 +119,8 @@ export default function UserAccountSettingsRoute() {
               <h2 className="ml-4 text-lg font-semibold leading-7 text-on-surface">Log out other sessions</h2>
             </div>
             <p className="mt-3 max-w-none text-sm leading-6 text-on-surface-variant">
-              {sessionCount
-                ? `You are currently logged in on ${sessionCount} other ${sessionCount === 1 ? 'session' : 'sessions'} across all of your devices`
+              {otherSessionCount
+                ? `You are currently logged in on ${otherSessionCount} other ${otherSessionCount === 1 ? 'session' : 'sessions'} across all of your devices`
                 : 'You are not logged in on any other sessions across all of your devices.'}
             </p>
           </div>
