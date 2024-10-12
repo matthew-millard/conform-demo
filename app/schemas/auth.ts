@@ -79,3 +79,7 @@ export const UpdatePasswordSchema = z
 export const UpdateUsernameSchema = z.object({
   username: UsernameSchema,
 });
+
+export const LogOutOfOtherSessionsSchema = z.object({
+  password: z.string(),
+});
