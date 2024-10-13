@@ -21,6 +21,7 @@ import ThemeSwitcher from './ThemeSwitcher';
 import Toast from './Toast';
 import OutlineButton from './OutlineButton';
 import PendingIndicator from './PendingIndicator';
+import DialogBox from './DialogBox';
 
 export {
   Checkbox,
@@ -46,4 +47,5 @@ export {
   Toast,
   OutlineButton,
   PendingIndicator,
+  DialogBox,
 };

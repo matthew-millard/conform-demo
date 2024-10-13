@@ -12,7 +12,6 @@ export default {
 
         background: 'var(--background)',
         surface: 'var(--surface)',
-        error: 'var(--error)',
 
         'on-primary': 'var(--on-primary)',
         'on-secondary': 'var(--on-secondary)',
@@ -20,7 +19,10 @@ export default {
         'on-surface-hover': 'var(--on-surface-hover)',
         'on-surface-variant': 'var(--on-surface-variant)',
         'on-surface-variant-hover': 'var(--on-surface-variant-hover)',
+        error: 'var(--error)',
+        'error-variant': 'var(--error-variant)',
         'on-error': 'var(--on-error)',
+        'error-surface': 'var(--error-surface)',
 
         'around-surface': 'var(--around-surface)',
         'across-surface': 'var(--across-surface)',

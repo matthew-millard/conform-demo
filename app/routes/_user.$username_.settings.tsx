@@ -1,9 +1,11 @@
-import { ArrowRightEndOnRectangleIcon, KeyIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { ArrowRightEndOnRectangleIcon, KeyIcon, UserCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
+import { useState } from 'react';
 import { logOutOtherSessionsAction, passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
 import { prisma } from '~/.server/db';
+import { DialogBox } from '~/components';
 import { LogOutOfOtherSessionsForm, UpdatePasswordForm, UpdateUsernameForm } from '~/forms';
 import { invariantResponse } from '~/utils/misc';
 
@@ -68,8 +70,21 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 
 export default function UserAccountSettingsRoute() {
   const data = useLoaderData<typeof loader>();
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const otherSessionCount = (data.user?._count?.sessions || 0) - 1;
+
+  const dialogProps = {
+    actionUrl: '/delete-account',
+    open: isDialogOpen,
+    showDialog,
+    title: 'Delete account',
+    description: `Are you sure you want to delete your account? All of your data will be permanently removed.
+		This action cannot be undone.`,
+  };
+
+  function showDialog(bool: boolean) {
+    setIsDialogOpen(bool);
+  }
 
   return (
     <>
@@ -126,6 +141,29 @@ export default function UserAccountSettingsRoute() {
           </div>
           <LogOutOfOtherSessionsForm />
         </section>
+
+        {/* Delete account */}
+        <section className="px-4 sm:px-6 lg:px-8 pt-16">
+          <div>
+            <div className="flex items-center">
+              <XCircleIcon className="w-8 h-8 flex-none text-error stroke-1" />
+              <h2 className="ml-4 text-lg font-semibold leading-7 text-on-surface">Delete account</h2>
+            </div>
+            <p className="mt-3 max-w-none text-sm leading-6 text-on-surface-variant">
+              Once you delete your account, there is no going back. Please be certain.
+            </p>
+          </div>
+          <div className="mt-6">
+            <button
+              type="button"
+              className="text-error text-sm font-semibold border border-error hover:border-error-variant px-6 py-2 rounded-md hover:text-error-variant  focus:ring-2 focus:ring-error focus:ring-offset-2 focus:ring-offset-surface outline-none"
+              onClick={() => showDialog(true)}
+            >
+              Delete Account
+            </button>
+          </div>
+        </section>
+        <DialogBox {...dialogProps} />
       </div>
     </>
   );
