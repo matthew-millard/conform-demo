@@ -22,6 +22,8 @@ import Toast from './Toast';
 import OutlineButton from './OutlineButton';
 import PendingIndicator from './PendingIndicator';
 import DialogBox from './DialogBox';
+import Breadcrumbs from './Breadcrumbs';
+import { Breadcrumb } from './Breadcrumbs';
 
 export {
   Checkbox,
@@ -48,4 +50,6 @@ export {
   OutlineButton,
   PendingIndicator,
   DialogBox,
+  Breadcrumbs,
+  Breadcrumb,
 };
