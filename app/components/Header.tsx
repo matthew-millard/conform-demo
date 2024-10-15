@@ -2,6 +2,7 @@ import { Popover, PopoverPanel } from '@headlessui/react';
 import { Bars3Icon, Cog6ToothIcon, UserCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import Logo from './Logo';
 import {
+  Breadcrumbs,
   LinkButton,
   LinkWithPrefetch,
   LogoutForm,
@@ -10,7 +11,7 @@ import {
   ProfileDropdown,
   ThemeSwitcher,
 } from '../components';
-import { Link } from '@remix-run/react';
+import { Link, useMatches } from '@remix-run/react';
 import { useOptionalUser } from '~/hooks/useOptionalUser';
 
 export const userNavigation = [
@@ -33,7 +34,7 @@ export default function Header() {
 
   return (
     <Popover className="sticky top-0 z-50">
-      <div className="mx-auto px-6 bg-surface dark:bg-zinc-900 border-b border-around-surface shadow-md">
+      <div className="mx-auto px-6 bg-surface dark:bg-zinc-900 border-b border-around-surface shadow-lg">
         <div className="flex items-center justify-between py-3 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Logo />
@@ -66,6 +67,7 @@ export default function Header() {
             )}
           </div>
         </div>
+        <Breadcrumbs />
       </div>
 
       <PopoverPanel

@@ -1,17 +1,23 @@
 import { ArrowRightEndOnRectangleIcon, KeyIcon, UserCircleIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { ActionFunctionArgs, LoaderFunctionArgs, json } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { useState } from 'react';
 import { logOutOtherSessionsAction, passwordUpdateAction, usernameUpdateAction } from '~/.server/actions';
 import { requireUser } from '~/.server/auth';
 import { prisma } from '~/.server/db';
-import { DialogBox } from '~/components';
+import { Breadcrumb, DialogBox } from '~/components';
 import { LogOutOfOtherSessionsForm, UpdatePasswordForm, UpdateUsernameForm } from '~/forms';
 import { invariantResponse } from '~/utils/misc';
 
 export const updateUsernameActionIntent = 'update-username';
 export const updatePasswordActionIntent = 'update-password';
 export const logOutOfOtherSessionsActionIntent = 'log-out-of-other-sessions';
+
+export const handle = {
+  breadcrumb: ({ params }: LoaderFunctionArgs) => {
+    return <Breadcrumb name="Settings" to={`/${params.username}/settings`} />;
+  },
+};
 
 export async function action({ request, params }: ActionFunctionArgs) {
   const { id, username } = await requireUser(request);
