@@ -67,7 +67,7 @@ export default function Header() {
             )}
           </div>
         </div>
-        <Breadcrumbs />
+        {isLoggedInUser ? <Breadcrumbs /> : null}
       </div>
 
       <PopoverPanel

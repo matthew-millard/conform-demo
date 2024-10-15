@@ -41,10 +41,10 @@ export default function Breadcrumbs() {
   );
 }
 
-export function Breadcrumb({ name, to }: { name: string; to: string }) {
+export function Breadcrumb({ name, to }: { name?: string; to?: string }) {
   return (
     <Link
-      to={to}
+      to={to || '/'}
       prefetch="intent"
       className={classNames('ml-4 text-sm font-medium', 'text-zinc-500 hover:text-zinc-400')}
     >
