@@ -14,7 +14,7 @@ export default function UserLayoutRoute() {
       <div>
         <Header />
       </div>
-      <main className="relative -mb-8 -mt-[5.75rem] overflow-hidden pb-8 pt-[5.75rem]">
+      <main className="py-10">
         <Outlet />
       </main>
     </div>

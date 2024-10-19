@@ -1,6 +1,6 @@
 import classNames from '~/utils/classNames';
 
-export default function PendingIndicator({ pendingText, color }: { pendingText: string; color?: string }) {
+export default function PendingIndicator({ pendingText, color }: { pendingText?: string; color?: string }) {
   const classNamesCombined = classNames('-ml-1 mr-3 h-5 w-5 animate-spin', color ?? 'text-dodger-blue-200');
   return (
     <span className="flex items-center">
