@@ -24,6 +24,7 @@ import PendingIndicator from './PendingIndicator';
 import DialogBox from './DialogBox';
 import Breadcrumbs from './Breadcrumbs';
 import { Breadcrumb } from './Breadcrumbs';
+import FileAttachmentForm from './FileAttachmentForm';
 
 export {
   Checkbox,
@@ -52,4 +53,5 @@ export {
   DialogBox,
   Breadcrumbs,
   Breadcrumb,
+  FileAttachmentForm,
 };

@@ -11,14 +11,15 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(cuid())
+  id        String     @id @default(cuid())
   firstName String
   lastName  String
-  username  String    @unique
-  email     String    @unique
+  username  String     @unique
+  email     String     @unique
   sessions  Session[]
   password  Password?
   roles     Role[]
+  documents Document[]
 }
 
 model Password {
@@ -59,4 +60,13 @@ model Role {
   updatedAt   DateTime     @updatedAt()
   permissions Permission[]
   users       User[]
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  fileName  String
+  url       String   @unique
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId    String
 }
