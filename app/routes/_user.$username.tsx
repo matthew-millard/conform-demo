@@ -1,6 +1,24 @@
-import { DownloadDocumentForm, UploadDocumentForm } from '~/forms';
+import { TrashIcon } from '@heroicons/react/24/outline';
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { useLoaderData } from '@remix-run/react';
+import { requireUserId } from '~/.server/auth';
+import { prisma } from '~/.server/db';
+import { UploadDocumentForm } from '~/forms';
+
+export async function loader({ request, params }: LoaderFunctionArgs) {
+  const userId = await requireUserId(request); // throws if user is not logged in
+
+  // get user's document data and return it
+  const data = await prisma.user.findUnique({ where: { username: params.username }, include: { documents: true } });
+  const isCurrentUser = data?.id === userId;
+
+  return { ...data, isCurrentUser };
+}
 
 export default function UserProfileRoute() {
+  const data = useLoaderData<typeof loader>();
+  const isCurrentUser = data.isCurrentUser;
+  console.log('data', data);
   return (
     <>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl xl:max-w-full lg:px-8">
@@ -12,7 +30,7 @@ export default function UserProfileRoute() {
             />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-on-surface">Matt Millard</h1>
+            <h1 className="text-2xl font-bold text-on-surface">{`${data.firstName} ${data.lastName}`}</h1>
             <p className="text-sm font-medium text-on-surface-variant">
               Bartender and server at Giulia Pizza Elgin Street
             </p>
@@ -42,7 +60,7 @@ export default function UserProfileRoute() {
                   </div>
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-on-surface">Email address</dt>
-                    <dd className="mt-1 text-sm text-on-surface-variant">matt.millard@gmail.com</dd>
+                    <dd className="mt-1 text-sm text-on-surface-variant">{data.email}</dd>
                   </div>
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-on-surface">Location</dt>
@@ -67,8 +85,24 @@ export default function UserProfileRoute() {
                         role="list"
                         className="divide-y divide-across-surface border rounded-md border-around-surface"
                       >
-                        <UploadDocumentForm />
-                        <DownloadDocumentForm />
+                        {isCurrentUser ? <UploadDocumentForm /> : null}
+                        {data.documents?.map(document => (
+                          <li key={document.id} className="flex items-center justify-between py-2 pl-4 pr-6 text-sm">
+                            <a
+                              href={document.url}
+                              className="flex w-0 flex-1 items-center h-6 font-medium text-primary hover:text-primary-variant disabled:text-dodger-blue-800 disabled:cursor-not-allowed"
+                              download={document.fileName}
+                            >
+                              {/* Delete the document url from db and document from cloudinary storage */}
+                              {isCurrentUser ? (
+                                <TrashIcon className="h-5 w-5 flex-shrink-0 text-zinc-400 hover:text-zinc-500 active:text-zinc-600 mr-2" />
+                              ) : null}
+                              <span className="w-0 flex-1 truncate text-zinc-500">{document.fileName}</span>
+                              <div className="ml-4 flex-shrink-0 flex">Download</div>
+                            </a>
+                          </li>
+                        ))}
+                        {/* <DownloadDocumentForm /> */}
                       </ul>
                     </dd>
                   </div>

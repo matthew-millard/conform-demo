@@ -86,7 +86,7 @@ export default function UploadDocumentForm() {
   );
 }
 
-function PaperClip({ id }: { id: string }) {
+export function PaperClip({ id }: { id: string }) {
   return (
     <label htmlFor={id}>
       <svg
