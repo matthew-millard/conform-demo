@@ -1,34 +1,36 @@
 import { getFormProps, getInputProps, useForm } from '@conform-to/react';
 import { useFetcher } from '@remix-run/react';
-import { ChangeEvent, useState } from 'react';
-import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE } from '~/schemas/files';
-import PendingIndicator from './PendingIndicator';
-import { z } from 'zod';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ACCEPTED_DOCUMENT_TYPES, MAX_FILE_SIZE, UploadDocumentSchema } from '~/schemas';
+import PendingIndicator from '../components/PendingIndicator';
 import { getZodConstraint, parseWithZod } from '@conform-to/zod';
+import { action } from '~/routes/resource';
+import { z } from 'zod';
 
 export const downloadFileActionIntent = 'download';
 export const uploadFileActionIntent = 'upload';
 export const documentField = 'document';
 
-export default function FileAttachmentForm() {
+export default function UploadDocumentForm() {
   const [fileName, setFileName] = useState('');
-  const [showSubmitButton, setShowSubmitButton] = useState(false);
-  const [formMethod, setFormMethod] = useState<'POST' | 'GET' | undefined>(() => {
-    // If the a file exists in the database, the form should be set to 'GET' to download the file
-    return 'POST';
-  });
+  const fetcher = useFetcher<typeof action>();
+  const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    if (fetcher.data && fetcher.data.success) {
+      formRef.current?.reset();
+      setFileName('');
+    }
+  }, [fetcher.data]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
 
     if (file) {
       setFileName(file.name);
-      setShowSubmitButton(true);
-      setFormMethod('POST');
     }
   };
 
-  const fetcher = useFetcher();
   const isFileUploadPending =
     fetcher.state !== 'idle' &&
     fetcher.formAction === '/resource' &&
@@ -37,9 +39,13 @@ export default function FileAttachmentForm() {
 
   const [form, fields] = useForm({
     id: 'file-attachment',
-    constraint: getZodConstraint(z.object({ document: z.instanceof(File) })),
+    constraint: getZodConstraint(z.object({ document: UploadDocumentSchema })),
+    shouldRevalidate: 'onInput',
+
     onValidate({ formData }) {
-      return parseWithZod(formData, { schema: z.object({ document: z.instanceof(File) }) });
+      return parseWithZod(formData, {
+        schema: z.object({ document: UploadDocumentSchema }),
+      });
     },
   });
 
@@ -47,8 +53,9 @@ export default function FileAttachmentForm() {
     <li className="flex items-center justify-between py-2 pl-4 pr-6 text-sm">
       <fetcher.Form
         {...getFormProps(form)}
+        ref={formRef}
         encType="multipart/form-data"
-        method={formMethod}
+        method="POST"
         action="/resource"
         className="flex w-0 flex-1 items-center h-6"
       >
@@ -59,29 +66,20 @@ export default function FileAttachmentForm() {
           {...getInputProps(fields.document, { type: 'file' })}
           onChange={handleFileChange}
           className="sr-only"
-          accept={ACCEPTED_FILE_TYPES.join(',')}
           size={MAX_FILE_SIZE} // 1MB
+          accept={ACCEPTED_DOCUMENT_TYPES.join(', ')}
         />
+        <p className="text-sm text-error">{fields.document.errors}</p>
+        <p className="text-sm text-error">{fetcher.data?.error ? fetcher.data.error : null}</p>
         <div className="ml-4 flex-shrink-0 flex">
-          {!fileName ? null : showSubmitButton && fileName ? (
-            <button
-              type="submit"
-              name="intent"
-              value={uploadFileActionIntent}
-              className="font-medium text-primary hover:text-primary-variant"
-            >
-              {isFileUploadPending ? <PendingIndicator color="text-dodger-blue-400" /> : 'Upload'}
-            </button>
-          ) : (
-            <button
-              type="submit"
-              name="intent"
-              value={downloadFileActionIntent}
-              className="font-medium text-primary hover:text-primary-variant"
-            >
-              Download
-            </button>
-          )}
+          <button
+            type="submit"
+            name="intent"
+            value={uploadFileActionIntent}
+            className="font-medium text-primary hover:text-primary-variant disabled:text-dodger-blue-800 disabled:cursor-not-allowed"
+          >
+            {isFileUploadPending ? <PendingIndicator color="text-dodger-blue-400" /> : 'Upload'}
+          </button>
         </div>
       </fetcher.Form>
     </li>
