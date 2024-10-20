@@ -1,4 +1,4 @@
-import { FileAttachmentForm } from '~/components';
+import { DownloadDocumentForm, UploadDocumentForm } from '~/forms';
 
 export default function UserProfileRoute() {
   return (
@@ -67,7 +67,8 @@ export default function UserProfileRoute() {
                         role="list"
                         className="divide-y divide-across-surface border rounded-md border-around-surface"
                       >
-                        <FileAttachmentForm />
+                        <UploadDocumentForm />
+                        <DownloadDocumentForm />
                       </ul>
                     </dd>
                   </div>

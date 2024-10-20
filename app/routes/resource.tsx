@@ -5,12 +5,12 @@ import {
   unstable_createMemoryUploadHandler as createMemoryUploadHandler,
   json,
 } from '@remix-run/node';
-
 import { requireUser } from '~/.server/auth';
 import { uploadDocument } from '~/.server/cloudinary';
 import { prisma } from '~/.server/db';
 import { setToastCookie, toastSessionStorage } from '~/.server/toast';
-import { uploadFileActionIntent } from '~/components/FileAttachmentForm';
+import { uploadFileActionIntent } from '~/forms/UploadDocumentForm';
+import { MAX_FILE_SIZE } from '~/schemas';
 
 export async function action({ request }: ActionFunctionArgs) {
   const user = await requireUser(request);
@@ -41,35 +41,40 @@ async function uploadFileAction(request: Request, userId: string) {
     }
 
     const folderPath = `users/${userId}/documents`;
-
     const uploadedDocument = await uploadDocument(data, folderPath);
     return uploadedDocument.secure_url;
   }, createMemoryUploadHandler());
 
   const formData = await parseMultipartFormData(request, uploadHandler);
-  const documentUrl = formData.get('document') as string;
-  const documentFileName = formData.get('fileName') as string;
+
+  const url = formData.get('document') as string;
+  const fileName = formData.get('fileName') as string;
 
   // Save the document URL to the database
-
   const documentRecord = await prisma.document.create({
     data: {
-      fileName: documentFileName,
-      url: documentUrl,
+      fileName,
+      url,
       user: { connect: { id: userId } },
     },
   });
 
-  console.log('documentRecord: ', documentRecord);
+  if (!documentRecord) {
+    return json({ success: false, error: 'Unexpected error occurred' }, { status: 500 });
+  }
 
   const toastCookieSession = await setToastCookie(request, {
     id: crypto.randomUUID(),
     type: 'success',
     description: 'Your document has been uploaded successfully.',
-    title: `${documentFileName} uploaded`,
+    title: `${fileName} uploaded`,
   });
 
-  return json(201, {
-    headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
-  });
+  return json(
+    { documentRecord, success: true, error: null },
+    {
+      status: 201,
+      headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
+    }
+  );
 }
