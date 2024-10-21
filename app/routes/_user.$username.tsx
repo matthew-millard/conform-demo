@@ -86,10 +86,11 @@ export default function UserProfileRoute() {
                         className="divide-y divide-across-surface border rounded-md border-around-surface"
                       >
                         {isCurrentUser ? <UploadDocumentForm /> : null}
+                        {/* Has documents? Show documents : fallback to 'This user currently has not documents */}
                         {data.documents?.map(document => (
                           <li key={document.id} className="flex items-center justify-between py-2 pl-4 pr-6 text-sm">
                             <a
-                              href={document.url}
+                              href={`/resource/${document.id}`}
                               className="flex w-0 flex-1 items-center h-6 font-medium text-primary hover:text-primary-variant disabled:text-dodger-blue-800 disabled:cursor-not-allowed"
                               download={document.fileName}
                             >

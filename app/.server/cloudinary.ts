@@ -13,6 +13,7 @@ export async function uploadDocument(data: AsyncIterable<Uint8Array>, folderPath
       {
         resource_type: 'raw',
         folder: folderPath,
+        overwrite: true,
       },
       (error, result) => {
         if (error) {

@@ -10,7 +10,6 @@ import { uploadDocument } from '~/.server/cloudinary';
 import { prisma } from '~/.server/db';
 import { setToastCookie, toastSessionStorage } from '~/.server/toast';
 import { uploadFileActionIntent } from '~/forms/UploadDocumentForm';
-import { MAX_FILE_SIZE } from '~/schemas';
 
 export async function action({ request }: ActionFunctionArgs) {
   const user = await requireUser(request);
@@ -35,10 +34,13 @@ export async function loader() {
 }
 
 async function uploadFileAction(request: Request, userId: string) {
-  const uploadHandler: UploadHandler = composeUploadHandler(async ({ name, data }) => {
-    if (name !== 'document') {
+  let uploadFileContentType: string | undefined = undefined;
+  const uploadHandler: UploadHandler = composeUploadHandler(async ({ name, data, filename, contentType }) => {
+    if (name !== 'document' || !filename) {
       return undefined;
     }
+
+    uploadFileContentType = contentType;
 
     const folderPath = `users/${userId}/documents`;
     const uploadedDocument = await uploadDocument(data, folderPath);
@@ -50,11 +52,23 @@ async function uploadFileAction(request: Request, userId: string) {
   const url = formData.get('document') as string;
   const fileName = formData.get('fileName') as string;
 
+  if (!uploadFileContentType) {
+    return json({ success: false, error: 'Invalid file type' }, { status: 400 });
+  }
+
   // Save the document URL to the database
-  const documentRecord = await prisma.document.create({
-    data: {
+  const documentRecord = await prisma.document.upsert({
+    where: { url },
+    create: {
       fileName,
       url,
+      contentType: uploadFileContentType,
+      user: { connect: { id: userId } },
+    },
+    update: {
+      fileName,
+      url,
+      contentType: uploadFileContentType,
       user: { connect: { id: userId } },
     },
   });
