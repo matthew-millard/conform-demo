@@ -2,7 +2,8 @@ import { TrashIcon } from '@heroicons/react/24/outline';
 import { useFetcher } from '@remix-run/react';
 
 export default function DeleteDocumentForm({ documentId }: { documentId: string }) {
-  const fetcher = useFetcher();
+  const fetcher = useFetcher({ key: documentId });
+
   return (
     <fetcher.Form action={`/resource/${documentId}`} method="POST">
       <input type="hidden" name="documentId" value={documentId} readOnly />
