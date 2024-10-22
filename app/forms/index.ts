@@ -4,7 +4,7 @@ import UpdateUsernameForm from './UpdateUsernameForm';
 import UpdatePasswordForm from './UpdatePasswordForm';
 import LogOutOfOtherSessionsForm from './LogOutOtherSessionsForm';
 import UploadDocumentForm from './UploadDocumentForm';
-import DownloadDocumentForm from './DownloadDocumentForm';
+import DeleteDocumentForm from './DeleteDocumentForm';
 
 export {
   LoginForm,
@@ -13,5 +13,5 @@ export {
   UpdatePasswordForm,
   LogOutOfOtherSessionsForm,
   UploadDocumentForm,
-  DownloadDocumentForm,
+  DeleteDocumentForm,
 };

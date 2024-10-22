@@ -7,9 +7,7 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod';
 import { action } from '~/routes/resource';
 import { z } from 'zod';
 
-export const downloadFileActionIntent = 'download';
 export const uploadFileActionIntent = 'upload';
-export const documentField = 'document';
 
 export default function UploadDocumentForm() {
   const [fileName, setFileName] = useState('');
