@@ -1,9 +1,9 @@
-import { TrashIcon } from '@heroicons/react/24/outline';
 import { LoaderFunctionArgs } from '@remix-run/node';
-import { useLoaderData } from '@remix-run/react';
+import { useFetchers, useLoaderData } from '@remix-run/react';
 import { requireUserId } from '~/.server/auth';
 import { prisma } from '~/.server/db';
 import { DeleteDocumentForm, UploadDocumentForm } from '~/forms';
+import classNames from '~/utils/classNames';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request); // throws if user is not logged in
@@ -18,6 +18,13 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function UserProfileRoute() {
   const data = useLoaderData<typeof loader>();
   const isCurrentUser = data.isCurrentUser;
+  const fetchers = useFetchers();
+
+  const isDeletingDocument = (documentId: string) => {
+    return fetchers.some(fetcher => {
+      return fetcher.formAction === `/resource/${documentId}` && fetcher.formMethod === 'POST';
+    });
+  };
 
   return (
     <>
@@ -81,27 +88,32 @@ export default function UserProfileRoute() {
                   <div className="sm:col-span-2">
                     <dt className="text-sm font-medium text-on-surface">Resume & References</dt>
                     <dd className="mt-1 text-sm text-on-surface-variant">
-                      <ul
+                      <ol
                         role="list"
                         className="divide-y divide-across-surface border rounded-md border-around-surface"
                       >
                         {isCurrentUser ? <UploadDocumentForm /> : null}
                         {/* Has documents? Show documents : fallback to 'This user currently has not documents */}
                         {data.documents?.map(document => (
-                          <li key={document.id} className="flex items-center justify-between py-2 pl-4 pr-6 text-sm">
+                          <li
+                            key={document.id}
+                            className={classNames(
+                              'items-center justify-between py-2 pl-4 pr-6 text-sm',
+                              isDeletingDocument(document.id) ? 'hidden' : 'flex'
+                            )}
+                          >
                             <a
                               href={`/resource/${document.id}`}
                               className="flex w-0 flex-1 items-center h-6 font-medium text-primary hover:text-primary-variant disabled:text-dodger-blue-800 disabled:cursor-not-allowed"
                               download={document.fileName}
                             >
-                              {/* Delete the document url from db and document from cloudinary storage */}
                               {isCurrentUser ? <DeleteDocumentForm documentId={document.id} /> : null}
                               <span className="w-0 flex-1 truncate text-zinc-500">{document.fileName}</span>
                               <div className="ml-4 flex-shrink-0 flex">Download</div>
                             </a>
                           </li>
                         ))}
-                      </ul>
+                      </ol>
                     </dd>
                   </div>
                 </dl>
