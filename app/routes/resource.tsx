@@ -35,6 +35,7 @@ export async function loader() {
 
 async function uploadFileAction(request: Request, userId: string) {
   let uploadFileContentType: string | undefined = undefined;
+  let uploadDocumentPublicId: string | undefined = undefined;
   const uploadHandler: UploadHandler = composeUploadHandler(async ({ name, data, filename, contentType }) => {
     if (name !== 'document' || !filename) {
       return undefined;
@@ -44,6 +45,7 @@ async function uploadFileAction(request: Request, userId: string) {
 
     const folderPath = `users/${userId}/documents`;
     const uploadedDocument = await uploadDocument(data, folderPath);
+    uploadDocumentPublicId = uploadedDocument.public_id;
     return uploadedDocument.secure_url;
   }, createMemoryUploadHandler());
 
@@ -54,6 +56,8 @@ async function uploadFileAction(request: Request, userId: string) {
 
   if (!uploadFileContentType) {
     return json({ success: false, error: 'Invalid file type' }, { status: 400 });
+  } else if (!uploadDocumentPublicId) {
+    return json({ success: false, error: 'Failed to upload document' }, { status: 500 });
   }
 
   // Save the document URL to the database
@@ -62,12 +66,14 @@ async function uploadFileAction(request: Request, userId: string) {
     create: {
       fileName,
       url,
+      publicId: uploadDocumentPublicId,
       contentType: uploadFileContentType,
       user: { connect: { id: userId } },
     },
     update: {
       fileName,
       url,
+      publicId: uploadDocumentPublicId,
       contentType: uploadFileContentType,
       user: { connect: { id: userId } },
     },

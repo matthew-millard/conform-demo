@@ -1,5 +1,34 @@
-import { LoaderFunctionArgs } from '@remix-run/node';
+import { ActionFunctionArgs, json, LoaderFunctionArgs } from '@remix-run/node';
+import { requireUser } from '~/.server/auth';
 import { prisma } from '~/.server/db';
+import { invariantResponse } from '~/utils/misc';
+import cloudinary, { DeleteApiResponse } from 'cloudinary';
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  const user = await requireUser(request);
+  const formData = await request.formData();
+  const documentId = formData.get('documentId');
+
+  invariantResponse(documentId === params.documentId, 'Invalid document ID', {
+    status: 400,
+    statusText: 'Bad Request',
+  });
+
+  const deletedRecord = await prisma.document.delete({
+    where: { id: documentId, userId: user.id },
+  });
+
+  // Delete the document from Cloudinary
+  await cloudinary.v2.api.delete_resources([deletedRecord.publicId], {
+    resource_type: 'raw',
+  });
+
+  if (!deletedRecord) {
+    throw new Response('Document not found', { status: 404 });
+  }
+
+  return json({ deletedRecord, success: true, error: null });
+}
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const documentId = params.documentId;

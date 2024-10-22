@@ -3,7 +3,7 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { useLoaderData } from '@remix-run/react';
 import { requireUserId } from '~/.server/auth';
 import { prisma } from '~/.server/db';
-import { UploadDocumentForm } from '~/forms';
+import { DeleteDocumentForm, UploadDocumentForm } from '~/forms';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request); // throws if user is not logged in
@@ -18,7 +18,7 @@ export async function loader({ request, params }: LoaderFunctionArgs) {
 export default function UserProfileRoute() {
   const data = useLoaderData<typeof loader>();
   const isCurrentUser = data.isCurrentUser;
-  console.log('data', data);
+
   return (
     <>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl xl:max-w-full lg:px-8">
@@ -95,15 +95,12 @@ export default function UserProfileRoute() {
                               download={document.fileName}
                             >
                               {/* Delete the document url from db and document from cloudinary storage */}
-                              {isCurrentUser ? (
-                                <TrashIcon className="h-5 w-5 flex-shrink-0 text-zinc-400 hover:text-zinc-500 active:text-zinc-600 mr-2" />
-                              ) : null}
+                              {isCurrentUser ? <DeleteDocumentForm documentId={document.id} /> : null}
                               <span className="w-0 flex-1 truncate text-zinc-500">{document.fileName}</span>
                               <div className="ml-4 flex-shrink-0 flex">Download</div>
                             </a>
                           </li>
                         ))}
-                        {/* <DownloadDocumentForm /> */}
                       </ul>
                     </dd>
                   </div>

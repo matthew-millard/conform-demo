@@ -27,7 +27,7 @@ export async function setToastCookie(
     id: string;
     type: 'success' | 'info' | 'warning' | 'error';
     title: string;
-    description: string;
+    description: string | undefined;
   }
 ) {
   const toastCookieSession = await getToastCookie(request);
