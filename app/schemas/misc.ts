@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+export const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
 export const ACCEPTED_DOCUMENT_TYPES = [
   'application/pdf',
   'application/doc',
@@ -8,6 +9,8 @@ export const ACCEPTED_DOCUMENT_TYPES = [
   'text/plain',
   'application/vnd.oasis.opendocument.text',
 ];
+
+export const ACCEPTED_IMAGE_TYPES = ['image/gif', 'image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
 
 export const UploadDocumentSchema = z
   .instanceof(File, { message: 'File is required' }) // Check if a file is present

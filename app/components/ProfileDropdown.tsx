@@ -5,20 +5,17 @@ import LogoutForm from './LogoutForm';
 type ProfileDropdownProps = {
   userNavigation: { name: string; description: string; path: string; icon: any }[];
   username: string;
+  url: string | undefined;
 };
 
-export default function ProfileDropdown({ userNavigation, username }: ProfileDropdownProps) {
+export default function ProfileDropdown({ userNavigation, username, url }: ProfileDropdownProps) {
   return (
     <Menu as="div" className="relative">
       <div>
         <MenuButton className="relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface">
           <span className="absolute -inset-1.5" />
           <span className="sr-only">Open user menu</span>
-          <img
-            alt=""
-            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-            className="h-8 w-8 rounded-full"
-          />
+          <img alt={username} src={url} className="h-8 w-8 rounded-full object-cover" />
           {/* <PlaceholderIcon /> */}
         </MenuButton>
       </div>

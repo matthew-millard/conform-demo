@@ -2,14 +2,17 @@ import { LoaderFunctionArgs } from '@remix-run/node';
 import { useFetchers, useLoaderData } from '@remix-run/react';
 import { requireUserId } from '~/.server/auth';
 import { prisma } from '~/.server/db';
-import { DeleteDocumentForm, UploadDocumentForm } from '~/forms';
+import { DeleteDocumentForm, UploadDocumentForm, UploadProfileImageForm } from '~/forms';
 import classNames from '~/utils/classNames';
 
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const userId = await requireUserId(request); // throws if user is not logged in
 
   // get user's document data and return it
-  const data = await prisma.user.findUnique({ where: { username: params.username }, include: { documents: true } });
+  const data = await prisma.user.findUnique({
+    where: { username: params.username },
+    include: { documents: true, profileImage: true },
+  });
   const isCurrentUser = data?.id === userId;
 
   return { ...data, isCurrentUser };
@@ -30,11 +33,14 @@ export default function UserProfileRoute() {
     <>
       <div className="mx-auto max-w-3xl px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl xl:max-w-full lg:px-8">
         <div className="flex items-center space-x-5">
-          <div className="flex-shrink-0">
+          <div className="relative flex-shrink-0">
             <img
-              className="h-20 w-20 lg:h-24 lg:w-24 rounded-full"
-              src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
+              className="h-20 w-20 lg:h-24 lg:w-24 rounded-full object-cover ring-4 dark:ring-zinc-800 ring-white shadow-md"
+              src={data.profileImage?.url}
             />
+            <div className="absolute bottom-0 right-0">
+              <UploadProfileImageForm />
+            </div>
           </div>
           <div>
             <h1 className="text-2xl font-bold text-on-surface">{`${data.firstName} ${data.lastName}`}</h1>
