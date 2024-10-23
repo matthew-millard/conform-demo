@@ -11,15 +11,16 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  firstName String
-  lastName  String
-  username  String     @unique
-  email     String     @unique
-  sessions  Session[]
-  password  Password?
-  roles     Role[]
-  documents Document[]
+  id           String        @id @default(cuid())
+  firstName    String
+  lastName     String
+  username     String        @unique
+  email        String        @unique
+  sessions     Session[]
+  password     Password?
+  roles        Role[]
+  documents    Document[]
+  profileImage ProfileImage?
 }
 
 model Password {
@@ -71,4 +72,14 @@ model Document {
   createdAt   DateTime @default(now())
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId      String
+}
+
+model ProfileImage {
+  id          String   @id @default(cuid())
+  url         String   @unique
+  publicId    String   @unique
+  contentType String
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId      String   @unique
 }

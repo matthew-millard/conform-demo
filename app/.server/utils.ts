@@ -10,6 +10,7 @@ export async function getUserData(userId: string) {
       firstName: true,
       lastName: true,
       username: true,
+      profileImage: true,
       roles: {
         select: {
           name: true,

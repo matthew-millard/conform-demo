@@ -122,7 +122,11 @@ export async function getUserId(request: Request) {
 export async function requireAnonymous(request: Request) {
   const userId = await getUserId(request);
   if (userId) {
-    throw redirect('/');
+    const user = await prisma.user.findFirst({
+      where: { id: userId },
+      select: { username: true },
+    });
+    throw redirect(`/${user?.username}`);
   }
 }
 

@@ -11,8 +11,9 @@ import {
   ProfileDropdown,
   ThemeSwitcher,
 } from '../components';
-import { Link, useMatches } from '@remix-run/react';
+import { Link, useMatches, useRouteLoaderData } from '@remix-run/react';
 import { useOptionalUser } from '~/hooks/useOptionalUser';
+import { loader } from '~/root';
 
 export const userNavigation = [
   {
@@ -31,6 +32,7 @@ export const userNavigation = [
 
 export default function Header() {
   const isLoggedInUser = useOptionalUser();
+  const data = useRouteLoaderData<typeof loader>('root');
 
   return (
     <Popover className="sticky top-0 z-50">
@@ -53,7 +55,11 @@ export default function Header() {
 
             {isLoggedInUser ? (
               <>
-                <ProfileDropdown userNavigation={userNavigation} username={isLoggedInUser.username} />
+                <ProfileDropdown
+                  userNavigation={userNavigation}
+                  username={isLoggedInUser.username}
+                  url={data?.user?.profileImage?.url}
+                />
               </>
             ) : (
               <>
@@ -112,9 +118,9 @@ export default function Header() {
                 className="flex items-center rounded-md text-on-surface hover:text-on-surface-variant"
               >
                 <img
-                  alt=""
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  className="mr-3 h-8 w-8 rounded-full"
+                  alt={`${data?.user?.firstName} ${data?.user?.lastName}`}
+                  src={data?.user?.profileImage?.url}
+                  className="mr-3 h-8 w-8 rounded-full object-cover"
                 />
                 <span className="sr-only">Your profile</span>
                 <span aria-hidden="true">{`${isLoggedInUser.firstName} ${isLoggedInUser.lastName}`}</span>

@@ -6,10 +6,11 @@ import {
   json,
 } from '@remix-run/node';
 import { requireUser } from '~/.server/auth';
-import { uploadDocument } from '~/.server/cloudinary';
+import { uploadDocument, uploadImage } from '~/.server/cloudinary';
 import { prisma } from '~/.server/db';
 import { setToastCookie, toastSessionStorage } from '~/.server/toast';
 import { uploadFileActionIntent } from '~/forms/UploadDocumentForm';
+import { uploadProfileImageActionIntent } from '~/forms/UploadProfileImageForm';
 
 export async function action({ request }: ActionFunctionArgs) {
   const user = await requireUser(request);
@@ -22,6 +23,9 @@ export async function action({ request }: ActionFunctionArgs) {
     case uploadFileActionIntent: {
       // Handle file upload
       return uploadFileAction(request, userId);
+    }
+    case uploadProfileImageActionIntent: {
+      return uploadProfileImageAction(request, userId);
     }
     default: {
       throw new Error('Invalid intent');
@@ -97,4 +101,58 @@ async function uploadFileAction(request: Request, userId: string) {
       headers: { 'set-cookie': await toastSessionStorage.commitSession(toastCookieSession) },
     }
   );
+}
+
+async function uploadProfileImageAction(request: Request, userId: string) {
+  let uploadFileContentType: string | undefined = undefined;
+  let publicId: string | undefined = undefined;
+  let uploadFileName: string | undefined = undefined;
+  const uploadHandler: UploadHandler = composeUploadHandler(async ({ name, data, filename, contentType }) => {
+    if (name !== 'profile' || !filename) {
+      return undefined;
+    }
+
+    uploadFileContentType = contentType;
+    uploadFileName = filename;
+
+    const folderPath = `users/${userId}/images`;
+    const uploadedImage = await uploadImage(data, folderPath);
+    publicId = uploadedImage.public_id;
+    return uploadedImage.secure_url;
+  }, createMemoryUploadHandler());
+
+  const formData = await parseMultipartFormData(request, uploadHandler);
+
+  const url = formData.get('profile') as string;
+
+  console.log('url', url);
+
+  if (!uploadFileContentType) {
+    return json({ success: false, error: 'Invalid file type' }, { status: 400 });
+  } else if (!publicId) {
+    return json({ success: false, error: 'Failed to upload document' }, { status: 500 });
+  }
+
+  const imageRecord = await prisma.profileImage.upsert({
+    where: {
+      userId,
+    },
+    create: {
+      url,
+      contentType: uploadFileContentType,
+      publicId,
+      userId,
+    },
+    update: {
+      url,
+      contentType: uploadFileContentType,
+      publicId,
+    },
+  });
+
+  if (!imageRecord) {
+    return json({ success: false, error: 'Unexpected error occurred' }, { status: 500 });
+  }
+
+  return json({ success: true }, { status: 201 });
 }

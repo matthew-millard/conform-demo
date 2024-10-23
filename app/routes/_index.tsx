@@ -1,4 +1,11 @@
+import { LoaderFunctionArgs } from '@remix-run/node';
+import { requireAnonymous } from '~/.server/auth';
 import { Header, LinkButton } from '~/components';
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  await requireAnonymous(request);
+  return {};
+}
 
 export default function IndexRoute() {
   return (

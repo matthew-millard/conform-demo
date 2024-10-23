@@ -32,3 +32,29 @@ export async function uploadDocument(data: AsyncIterable<Uint8Array>, folderPath
 
   return uploadPromise;
 }
+
+export async function uploadImage(data: AsyncIterable<Uint8Array>, folderPath: string) {
+  const uploadPromise = new Promise<UploadApiResponse>(async (resolve, reject) => {
+    const uploadStream = cloudinary.v2.uploader.upload_stream(
+      {
+        resource_type: 'image',
+        folder: folderPath,
+        overwrite: true,
+      },
+      (error, result) => {
+        if (error) {
+          reject(error);
+          return;
+        }
+        if (result) {
+          resolve(result);
+        } else {
+          reject(new Error('Upload failed'));
+        }
+      }
+    );
+    await writeAsyncIterableToWritable(data, uploadStream);
+  });
+
+  return uploadPromise;
+}
