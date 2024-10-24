@@ -1,3 +1,3 @@
-# Conform Demo with Remix
+# Hospo Hub
 
-A demonstration project showcasing form validation and error handling using the Conform library in a Remix application.
+## Hospo Hub is a free networking platform for hospitality workers. Connect with industry peers, showcase your experience, and discover new opportunities in the hospitality sector.
